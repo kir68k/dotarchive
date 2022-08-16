@@ -8,6 +8,7 @@
   impermanence,
   agenix,
   homeage,
+  kipkgs,
 }: let
   dwl-config = builtins.readFile ./dwl-config.c;
 in {
@@ -17,6 +18,7 @@ in {
     dwl-flake.overlay."${system}"
     (final: prev: {
       agenix-cli = agenix.defaultPackage."${system}";
+      kipkgs = kipkgs.packages."${system}";
       inherit homeage impermanence;
     })
   ];

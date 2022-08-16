@@ -86,10 +86,10 @@
         "find")
           if [ -z "$3" ]; then
               nix search nixpkgs $2
-          elif [ $3 = "--jd" ]; then
-            nix search github:jordanisaacs/jdpkgs $2
+          elif [ $3 = "--ki" ]; then
+            nix search git+https://git.kirinsst.xyz/kir/kipkgs $2
           elif [ $3 = "--dot" ]; then
-            nix search github:jordanisaacs/dotfiles $2
+            nix search git+https://git.kirinsst.xyz/kir/dotfiles $2
           else
             echo "Unknown option $3"
           fi

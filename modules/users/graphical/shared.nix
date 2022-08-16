@@ -4,7 +4,6 @@
   lib,
   ...
 }:
-
 with lib; let
   cfg = config.ki.graphical;
   systemCfg = config.machineData.systemConfig;
@@ -15,36 +14,38 @@ in {
         QT_QPA_PLATFORMTHEME = "qt5ct";
       };
 
-      packages = with pkgs; [
-        phinger-cursors
+      packages = with pkgs;
+        [
+          phinger-cursors
 
-        # QT
-        qt5ct
-        libsForQt5.qtstyleplugin-kvantum
+          # QT
+          qt5ct
+          libsForQt5.qtstyleplugin-kvantum
 
-        xdg-utils
-      ] ++ (
-        if (systemCfg.connectivity.sound.enable)
-        then [ calibre pavucontrol pasystray ]
-        else [ ]
-      );
+          xdg-utils
+        ]
+        ++ (
+          if (systemCfg.connectivity.sound.enable)
+          then [calibre pavucontrol pasystray]
+          else []
+        );
 
       keyboard.layout = "dk";
     };
 
-    gtk = {
+    gtk = with pkgs; {
       enable = true;
       #font = {
       #  name = "";
       #  package = ;
       #};
       theme = {
-        name = "Qogir-Dark";
-        package = pkgs.qogir-theme;
+        name = "TokyoNight";
+        package = kipkgs.tokyonight-gtk;
       };
       iconTheme = {
-        name = "Qogir-dark";
-        package = pkgs.qogir-icon-theme;
+        name = "Numix";
+        package = numix-icon-theme;
       };
       gtk3.extraConfig = {
         gtk-cursor-theme-name = "phinger-cursors";
@@ -52,71 +53,7 @@ in {
       };
     };
 
-    xdg = {
-      systemDirs.data = [
-        "${pkgs.gtk3}/share/gsettings-schemas/${pkgs.gtk3.name}"
-        "${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.name}"
-      ];
-
-      configFile = {
-        "qt5ct/qt5ct.conf" = {
-          text = ''
-            [Appearance]
-            icon_theme=Qogir-dark
-            style=kvantum_dark
-          '';
-        };
-
-        "Kvantum/kvantum.kvconfig" = {
-          text = ''
-            theme=Qogir-Kvantum-Dark
-          '';
-        };
-
-        "Kvantum/Qogir-Kvantum-Dark" = {
-          source = "${pkgs.qogir-kde}/share/Kvantum/Qogir-dark";
-        };
-
-        "wallpapers" = {
-          source = ./wallpapers;
-        };
-      };
-
-      dataFile = {
-        "icons/default/index.theme" = {
-          text = ''
-            [icon theme]
-            Inherits=phinger-cursors
-          '';
-        };
-
-        "icons/phinger-cursors" = {
-          source = "${pkgs.phinger-cursors}/share/icons/phinger-cursors";
-        };
-
-        "icons/Qogir-dark" = {
-          source = "${pkgs.qogir-icon-theme}/share/icons/Qogir-dark";
-        };
-
-        "icons/gnome" = {
-          source = "${pkgs.gnome-icon-theme}/share/icons/gnome";
-        };
-
-        "icons/hicolor" = {
-          source = "${pkgs.hicolor-icon-theme}/share/icons/hicolor";
-        };
-      };
-    };
-
-    dconf.settings = {
-      "org/gnome/desktop/interface" = {
-        icon-theme = "Qogir-dark";
-        cursor-theme = "phinger-cursors";
-        text-scaling-factor = 1.25;
-      };
-    };
-
-    xdg = {
+    xdg = with pkgs; {
       enable = true;
       mime.enable = true;
       mimeApps = {
@@ -144,6 +81,74 @@ in {
           "x-scheme-handler/file" = "org.kde.dolphin.desktop";
           "x-scheme-handler/terminal" = "alacritty.desktop";
         };
+      };
+      systemDirs.data = [
+        "${gtk3}/share/gsettings-schemas/${gtk3.name}"
+        "${gsettings-desktop-schemas}/share/gsettings-schemas/${gsettings-desktop-schemas.name}"
+      ];
+
+      configFile = {
+        "qt5ct/qt5ct.conf" = {
+          text = ''
+            [Appearance]
+            icon_theme=Numix
+            style=kvantum-dark
+          '';
+        };
+
+        "Kvantum/kvantum.kvconfig" = {
+          text = ''
+            theme=TokyoNight
+          '';
+        };
+
+        "Kvantum/TokyoNight" = {
+          source = "${kipkgs.tokyonight-kvantum}/share/Kvantum/TokyoNight";
+        };
+
+        "wallpapers" = {
+          source = ./wallpapers;
+        };
+
+        "kdeglobals" = {
+          text = ''
+            [General]
+            TerminalApplication=${alacritty}/bin/alacritty
+          '';
+        };
+      };
+
+      dataFile = {
+        "icons/default/index.theme" = {
+          text = ''
+            [icon theme]
+            Inherits=phinger-cursors
+          '';
+        };
+
+        "icons/phinger-cursors" = {
+          source = "${phinger-cursors}/share/icons/phinger-cursors";
+        };
+
+        "icons/Numix" = {
+          source = "${numix-icon-theme}/share/icons/Numix";
+        };
+
+        "icons/gnome" = {
+          source = "${gnome-icon-theme}/share/icons/gnome";
+        };
+
+        "icons/hicolor" = {
+          source = "${hicolor-icon-theme}/share/icons/hicolor";
+        };
+      };
+    };
+
+    dconf.settings = {
+      "org/gnome/desktop/interface" = {
+        icon-theme = "Numix";
+        cursor-theme = "phinger-cursors";
+        text-scaling-factor = 1.5;
       };
     };
   };

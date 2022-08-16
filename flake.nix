@@ -39,6 +39,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
+
+    kipkgs = {
+      url = "git+https://git.kirinsst.xyz/kir/kipkgs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -50,6 +55,7 @@
     home-manager,
     homeage,
     dwl-flake,
+    kipkgs,
     ...
   } @ inputs: let
     inherit (nixpkgs) lib;
@@ -74,6 +80,7 @@
           dwl-flake
           impermanence
           homeage
+          kipkgs
           ;
       })
       overlays

@@ -4,7 +4,6 @@
   lib,
   ...
 }:
-
 with lib; let
   cfg = config.ki.ssh;
 in {
@@ -46,4 +45,4 @@ in {
       };
     };
   };
-}     
+}
