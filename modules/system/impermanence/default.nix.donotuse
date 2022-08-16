@@ -1,0 +1,68 @@
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+
+with lib; let
+  cfg = config.ki.impermanence;
+in {
+  options.ki.impermanence = {
+    enable = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Whether to enable Impermanence";
+    };
+
+    type = mkOption {
+      type = types.enum [ "client" "server" ];
+      default = "client";
+      description = "Whether is a SSH client or server";
+    };
+
+    authorizedKeyFiles = mkOption {
+      type = with types; listOf str;
+      default = "";
+    };
+
+    files = mkOption {
+      type = with types; listOf str;
+      default = [ "" ];
+      description = "List of persistent files";
+    };
+
+    dirs = mkOption {
+      type = with types; listOf str;
+      default = [ "" ];
+      description = "List of persistent directories";
+    };
+  };
+
+  config = let
+    impermanence = mkMerge [
+      (mkIf (config.ki.boot.type == "zfs-crypt") {
+        # Erase zfs pools on boot
+        boot.initrd.postDeviceCommands = lib.mkAfter ''
+          zfs rollback -r rpool/local/root@blank
+          zfs rollback -r rpool/local/home@blank
+        '';
+
+        #environment.persistence."/persist".directories = mkIf (config.ki.ssh.enable && config.ki.ssh.type == "server") [
+        #  "/etc/secrets/initrd"
+        #];
+        systemd.services."persist--persist-".wants = [ "zfs-mount.service" ];
+      })
+      {
+        environment.persistence."/persist" = {
+          hideMounts = true;
+          #files = config.ki.secrets.identityPaths;
+          files = cfg.files;
+          directories = cfg.dirs;
+        };
+        programs.fuse.userAllowOther = true;
+      }
+    ];
+  in
+    mkIf cfg.enable impermanence;
+}

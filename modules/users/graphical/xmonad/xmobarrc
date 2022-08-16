@@ -1,0 +1,49 @@
+Config {
+   -- appearance
+     font             =    "xft:Iosevka Nerd Font:weight=bold:pixelsize=21:antialias=true:hinting=true"
+   , additionalFonts  =  [ "xft:Font Awesome 6 Free:style=Solid:pixelsize=21"
+                         , "xft:Font Awesome 6 Free:style=Regular:pixelsize=21"
+                         , "xft:Font Awesome 6 Brands:style=Regular:pixelsize=21"
+                         ]
+   , bgColor          =  "#1e1d2f"
+   , fgColor          =  "#c9cbff"
+   , alpha            =  255
+   , position         =  TopSize L 100 48
+   , border           =  NoBorder
+   , borderColor      =  "#373b41"
+   , lowerOnStart     =  True
+   , hideOnStart      =  False
+   , allDesktops      =  True
+   , overrideRedirect =  False
+   , pickBroadest     =  False
+   , persistent       =  False
+   , sepChar          =  "%"
+   , alignSep         =  "}{"
+   , iconRoot         =  "/etc/nixos/modules/users/graphical/xmonad/xpm"
+   , template         =  " <fn=3></fn> <fc=#6e6c7e>|</fc> %UnsafeStdinReader% }<fc=#c9cbff>%date%</fc> <fc=#6e6c7e>|</fc> <fc=#c9cbff>%EKCH%</fc>{ <fc=#988ba2><fn=3></fn> %uname%</fc> <fc=#6e6c7e>|</fc> <fc=#f8bd96>%cpu%</fc> <fc=#6e6c7e>|</fc> <fc=#abe9b3>%wlp3s0%</fc> <fc=#6e6c7e>|</fc> <fc=#f28fad>%memory%</fc> <fc=#6e6c7e>|</fc> %uwu% "
+
+   -- plugins
+   , commands = [
+                -- Allow for clickable workspaces..
+                  Run UnsafeStdinReader
+                  -- Weather
+                , Run Weather "EKCH" ["-t", "EKCH :: \x005b<tempC>°C\x005d", "-L","10","-H","25"] 18000
+                  -- Time and date
+                , Run Date "%b %d %Y - \x005b%H:%M\x005d " "date" 50
+                  -- Cpu usage (percentage)
+                , Run Cpu ["-t", "<fn=1>\xf2db</fn> cpu: \x005b<total>%\x005d","-H","50"] 20
+                  -- Network DOWN/UP
+		, Run Network "wlp3s0" ["-t", "<fn=1>\xf0ab</fn> <rx>kB <fn=1>\xf0aa</fn> <tx>kB"] 20
+                  -- Memory, used in mb and percentage
+                , Run Memory ["-t", "<fn=1>\xf233</fn> mem: <used>M \x005b<usedratio>%\x005d"] 10
+                  -- Show disk usage, I assume it doesn't work with ZFS.
+                -- , Run DiskU [("/", "<fn=1>\xf0c7</fn> hdd: <free> free")] [] 60
+                  -- Battery status, Idk how it'll be for 2 batteries lol
+                -- , Run BatteryP ["BAT0"] ["--template", "<acstatus>: <left>%"] 30
+
+                  -- Show kernel version c:
+                , Run Com "uname" ["-r"] "" 36000
+                  -- uwu
+                , Run Com "printf" ["uwu"] "uwu" 36000
+        	      ]
+   }
