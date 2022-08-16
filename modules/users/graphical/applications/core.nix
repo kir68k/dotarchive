@@ -14,8 +14,9 @@ in {
 
   config = mkIf (cfg.applications.enable) {
     home.packages = with pkgs; [
-      geogebra
-      dolphin
+      geogebra # Broken on Wayland, STILL >.>
+      cinnamon.nemo
+      
       okular
       wdisplays
 

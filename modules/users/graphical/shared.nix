@@ -60,8 +60,8 @@ in {
         enable = true;
         associations.added = {
           "x-scheme-handler/terminal" = "alacritty.desktop";
-          "x-scheme-handler/file" = "org.kde.dolphin.desktop";
-          "x-directory/normal" = "org.kde.dolphin.desktop";
+          "x-scheme-handler/file" = "nemo.desktop";
+          "x-directory/normal" = "nemo.desktop";
         };
         defaultApplications = {
           "application/pdf" = "okularApplication_pdf.desktop";
@@ -76,9 +76,9 @@ in {
           "text/x-python" = "nvim.desktop";
           "text/x-tex" = "texstudio.desktop";
           "text/x-makefile" = "nvim.desktop";
-          "inode/directory" = "org.kde.dolphin.desktop";
-          "x-directory/normal" = "org.kde.dolphin.desktop";
-          "x-scheme-handler/file" = "org.kde.dolphin.desktop";
+          "inode/directory" = "nemo.desktop";
+          "x-directory/normal" = "nemo.desktop";
+          "x-scheme-handler/file" = "nemo.desktop";
           "x-scheme-handler/terminal" = "alacritty.desktop";
         };
       };

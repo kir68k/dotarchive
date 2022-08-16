@@ -85,8 +85,10 @@ with lib; let
     bindsym $mod+Control+$down resize grow height 10px
 
     bindsym $mod+f+space fullscreen toggle
-    bindsym $mod+m layout stacking
-    bindsym $mod+t fullscreen disable, floating disable, layout default
+    bindsym $mod+s layout stacking
+    bindsym $mod+Shift+f fullscreen disable, floating disable, layout default
+    bindsym $mod+t layout tabbed
+    bindsym $mod+Shift+s layout toggle
 
     bindsym $mod+Shift+space floating toggle
 
@@ -123,6 +125,7 @@ with lib; let
     for_window [app_id="gimp"] floating enable
     for_window [app_id="org.keepassxc.KeePassXC"] floating enable
     for_window [app_id="virt-manager"] floating enable
+    for_window [app_id="nemo"] floating enable
 
     input "type:touchpad" {
       dwt enabled
