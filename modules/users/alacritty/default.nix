@@ -18,19 +18,19 @@ in {
         colors = {
           # BG/FG colours
           primary = {
-            background = "0x24283B";
+            background = "0x1A1B26";
             foreground = "0xC0CAF5";
           };
 
           # Colors the cursor will follow
           cursor = {
-            text = "0x24283B";
+            text = "0x1A1B26";
             cursor = "0xCFC9C2";
           };
 
           # Color scheme
           normal = {
-            black = "0x1A1B26";
+            black = "0x414868";
             red = "0xF7768E";
             green = "0x9ECE6A";
             yellow = "0xE0AF68";
