@@ -110,7 +110,11 @@
 
     defaultClientConfig = {
       core.enable = true;
-      boot.type = "efi-crypt";
+      boot = {
+        type = "efi-crypt";
+        # plymouth.enable = true; # For now it's broken, all it does is give the TTY default font which is small on HiDPI...
+        # I assume I have missed something, probably as I'm writing this late at night tired.
+      };
       gnome = {
         enable = true;
         keyring = {
