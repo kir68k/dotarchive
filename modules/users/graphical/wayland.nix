@@ -243,7 +243,7 @@ in {
         icon = "obsidian";
       };
 
-      element = {
+      element-desktop = {
         name = "Element";
         terminal = false;
         mimeType = ["x-scheme-handler/element"];
