@@ -120,6 +120,8 @@ with lib; let
     smart_borders on
     default_border pixel 2
     output eDP-0 scale 1
+    gaps inner 10
+    client.focused #c0caf5 #c0caf5 #c0caf5
 
     for_window [app_id="steam"] floating enable
     for_window [app_id="gimp"] floating enable

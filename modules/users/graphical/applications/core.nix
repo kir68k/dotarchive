@@ -14,8 +14,19 @@ in {
 
   config = mkIf (cfg.applications.enable) {
     home.packages = with pkgs; [
+      # Work
       geogebra # Broken on Wayland, STILL >.>
       cinnamon.nemo
+
+      # Production
+      # natron # broken rn
+      blender
+      openshot-qt
+      darktable
+      rawtherapee
+      ffmpeg
+      imagemagick
+      ardour
 
       # Utilities
       okular
@@ -23,9 +34,10 @@ in {
       thunderbird
       flameshot
       libsixel
-
-      element-desktop
       kipkgs.nerdfetch # Requires a NerdFont, those don't work on a TTY (assuming, but i can bet on it), so putting it here
+
+      # Matrix client
+      element-desktop
     ];
   };
 }

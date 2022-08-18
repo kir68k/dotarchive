@@ -62,10 +62,9 @@ in {
         };
 
         window = {
-          opacity = 1;
+          opacity = 0.85;
         };
 
-        # Not working, Idk why
         cursor = {
           style = {
             shape = "Block";
