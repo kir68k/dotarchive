@@ -254,6 +254,16 @@ in {
         exec = "element-desktop -enable-features=UseOzonePlatform -ozone-platform=wayland %u";
         icon = "element";
       };
+
+      spotify = {
+        name = "Spotify";
+        terminal = false;
+        mimeType = ["x-scheme-handler/spotify"];
+        categories = ["Audio" "Music" "Player" "AudioVideo"];
+        type = "Application";
+        exec = "spotify --enable-features=UseOzonePlatform --ozone-platform=wayland %U";
+        icon = "spotify-client";
+      };
     };
 
     home.file = {

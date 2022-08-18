@@ -38,6 +38,9 @@ in {
 
       # Matrix client
       element-desktop
+
+      # Audio
+      kipkgs.spotify-deb
     ];
   };
 }

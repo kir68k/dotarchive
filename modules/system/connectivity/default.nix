@@ -22,7 +22,7 @@ in {
     environment.systemPackages = with pkgs;
       [ ] ++ (
         if (cfg.sound.enable)
-        then [ pulseaudio scripts.soundTools ]
+        then [ pulseaudio pulsemixer scripts.soundTools ]
         else [ ]
       );
 

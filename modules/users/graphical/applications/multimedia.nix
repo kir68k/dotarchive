@@ -4,9 +4,54 @@
   lib,
   ...
 }:
-
 with lib; let
   cfg = config.ki.graphical.applications;
+
+  # I could not find a way to avoid this...
+  # I have added a few required for 2.99.10
+  gimpBuildInputs = with pkgs; [
+    appstream
+    appstream-glib
+    libarchive
+    babl
+    gegl
+    gtk3
+    glib
+    gdk-pixbuf
+    gobject-introspection
+    vala
+    pango
+    cairo
+    gexiv2
+    harfbuzz
+    isocodes
+    freetype
+    fontconfig
+    lcms
+    libpng
+    libjpeg
+    poppler
+    poppler_data
+    libtiff
+    openexr
+    libmng
+    librsvg
+    libwmf
+    zlib
+    libzip
+    ghostscript
+    aalib
+    shared-mime-info
+    libwebp
+    libheif
+    python
+    libexif
+    xorg.libXpm
+    glib-networking
+    libmypaint
+    mypaint-brushes1
+    libgudev
+  ];
 in {
   config = {
     home.packages = with pkgs; [
@@ -14,7 +59,32 @@ in {
       pinta
       inkscape
       krita
-      gimp
+      # TODO doesn't seem to build, too tired rn to find out why
+      #(gimp.override rec {
+      #  gtk2 = gtk3;
+      #  gtk-mac-integration-gtk2 = gtk-mac-integration;
+      #})
+      #(gimp.overrideAttrs (_: rec {
+      #  pname = "gimp";
+      #  version = "2.99.10";
+      #  src = fetchurl {
+      #    url = "http://download.gimp.org/pub/gimp/v${lib.versions.majorMinor version}/${pname}-${version}.tar.bz2";
+      #    sha256 = "ngjxxKRV6N1N0Fef4olBnjjINds448DUDNETf7ARLyk=";
+      #  };
+      #
+      #  patches = [
+      #    (substituteAll {
+      #      src = ./patches/remove-cc-reference.patch;
+      #      cc_version = stdenv.cc.cc.name;
+      #    })
+      #  ];
+      #
+      #  buildInputs = gimpBuildInputs;
+      #
+      #  passthru = {
+      #    gtk = gtk3;
+      #  };
+      #}))
     ];
 
     xdg.configFile."vimiv/vimiv.conf" = {

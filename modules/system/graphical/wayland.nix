@@ -19,6 +19,7 @@ in {
   };
 
   config = mkIf (cfg.enable) {
+    environment.systemPackages = with pkgs; [xwayland];
     xdg.portal = {
       enable = true;
       wlr.enable = true;
