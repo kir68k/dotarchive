@@ -106,11 +106,11 @@
         "apply")
           pushd ~/.dotfiles
           if [ -z "$2" ]; then
-            sudo nixos-rebuild switch --flake '.#'
+            doas nixos-rebuild switch --flake '.#'
           elif [ $2 = "--boot" ]; then
-            sudo nixos-rebuild boot --flake '.#'
+            doas nixos-rebuild boot --flake '.#'
           elif [ $2 = "--test" ]; then
-            sudo nixos-rebuild test --flake '.#'
+            doas nixos-rebuild test --flake '.#'
           elif [ $2 = "--check" ]; then
             nixos-rebuild dry-activate --flake '.#'
           else
@@ -139,7 +139,7 @@
             if [ -z "$4" ]; then
               echo "Expected path to a usb drive following --burn"
             else
-              sudo dd if=./result/iso/nixos.iso of=$4 status=progress bs=1M
+              doas dd if=./result/iso/nixos.iso of=$4 status=progress bs=1M
             fi
           else
             echo "Unexpected option $3. Expected --burn"

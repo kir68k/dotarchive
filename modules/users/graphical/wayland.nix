@@ -128,6 +128,7 @@ with lib; let
     for_window [app_id="org.keepassxc.KeePassXC"] floating enable
     for_window [app_id="virt-manager"] floating enable
     for_window [app_id="nemo"] floating enable
+    for_window [app_id="xarchiver"] floating enable
     for_window [app_id="com.nextcloud.desktopclient.nextcloud"] floating enable
 
     input "type:touchpad" {

@@ -7,6 +7,7 @@
   imports = [
     ./alacritty
     ./applications
+    ./direnv
     ./git
     ./graphical
     ./ssh

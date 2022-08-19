@@ -177,6 +177,12 @@
         applications = {
           steam.enable = true;
         };
+        security.doas = {
+          enable = true;
+          user = ["ki"];
+          keepEnv = true;
+          persist = true;
+        };
         #secrets.identityPaths = [ secrets.age.system.relativity.privateKeyPath ];
       }
     ];
@@ -212,7 +218,10 @@
       kirinsst = user.mkHMUser {
         username = "kirinsst";
         userConfig = {
-          zsh.enable = true;
+          zsh = {
+            enable = true;
+            dircolors.enable = true;
+          };
         };
       };
 
@@ -242,9 +251,13 @@
             };
           };
           applications.enable = true;
-          zsh.enable = true;
+          zsh = {
+            enable = true;
+            dircolors.enable = true;
+          };
           alacritty.enable = true;
           git.enable = true;
+          direnv.enable = true;
           ssh = {
             enable = true;
             git.enable = true;

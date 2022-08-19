@@ -4,7 +4,6 @@
   lib,
   ...
 }:
-
 with lib; let
   cfg = config.ki.graphical;
 in {
@@ -17,6 +16,7 @@ in {
       # Work
       geogebra # Broken on Wayland, STILL >.>
       cinnamon.nemo
+      xarchiver
 
       # Production
       # natron # broken rn

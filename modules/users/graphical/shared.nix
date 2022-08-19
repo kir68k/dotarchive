@@ -65,6 +65,16 @@ in {
         };
         defaultApplications = {
           "application/pdf" = "okularApplication_pdf.desktop";
+          "application/x-tar" = "xarchiver.desktop";
+          "application/x-bzip2 " = "xarchiver.desktop";
+          "application/gzip" = "xarchiver.desktop";
+          "application/x-lzip" = "xarchiver.desktop";
+          "application/x-lzma" = "xarchiver.desktop";
+          "application/x-xz" = "xarchiver.desktop";
+          "application/zstd" = "xarchiver.desktop";
+          "application/x-7z-compressed" = "xarchiver.desktop";
+          "application/vnd.android.package-archive" = "xarchiver.desktop";
+          "application/x-gtar" = "xarchiver.desktop";
           "application/x-shellscript" = "nvim.desktop";
           "application/x-perl" = "nvim.desktop";
           "application/json" = "nvim.desktop";

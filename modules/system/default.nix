@@ -4,17 +4,18 @@
   lib,
   ...
 }: {
-  imports = [  
+  imports = [
     ./applications
     ./boot
     ./connectivity
-    (import ./core { inherit inputs; })
+    (import ./core {inherit inputs;})
     ./gnome
     ./graphical
     ./greetd
     ./laptop
     ./network
     ./relativity
+    ./security
     #./secrets
     #./ssh
     ./tty

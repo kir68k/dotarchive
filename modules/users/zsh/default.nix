@@ -4,12 +4,13 @@
   lib,
   ...
 }:
-
 with lib; let
   cfg = config.ki.zsh;
 in {
   options.ki.zsh = {
     enable = mkEnableOption "Enable Z Shell with a nice config";
+
+    dircolors.enable = mkEnableOption "Enable a configured LS_COLORS";
   };
 
   config = mkIf (cfg.enable) (
@@ -69,6 +70,11 @@ in {
           PS1="
           %B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}㉿%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
         '';
+      };
+
+      programs.dircolors = mkIf (cfg.dircolors.enable) {
+        enable = true;
+        enableZshIntegration = true;
       };
     }
   );

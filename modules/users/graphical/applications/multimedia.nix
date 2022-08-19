@@ -59,6 +59,7 @@ in {
       pinta
       inkscape
       krita
+      ffmpegthumbnailer
       # TODO doesn't seem to build, too tired rn to find out why
       #(gimp.override rec {
       #  gtk2 = gtk3;
