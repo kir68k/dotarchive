@@ -122,6 +122,7 @@ with lib; let
     output eDP-0 scale 1
     gaps inner 10
     client.focused #c0caf5 #c0caf5 #c0caf5
+    client.unfocused #24283b #24283b #24283b
 
     for_window [app_id="steam"] floating enable
     for_window [app_id="gimp"] floating enable
@@ -130,6 +131,7 @@ with lib; let
     for_window [app_id="nemo"] floating enable
     for_window [app_id="xarchiver"] floating enable
     for_window [app_id="com.nextcloud.desktopclient.nextcloud"] floating enable
+    for_window [app_id="org.inkscape.Inkscape"] floating enable
 
     input "type:touchpad" {
       dwt enabled
@@ -507,6 +509,7 @@ in {
         #workspaces button:hover {
             box-shadow: inherit;
             text-shadow: inherit;
+            background: #24283b;
         }
         #workspaces button:hover {
             background: rgba(26, 26, 26, 0.8);
@@ -515,23 +518,23 @@ in {
         }
 
         #pulseaudio {
-            color: #f7768e;
+            color: #c0caf5;
         }
         #network {
-            color: #ff9e64;
+            color: #c0caf5;
             padding: 0 13px;
         }
         #cpu {
-            color: #e0af68;
+            color: #c0caf5;
         }
         #memory {
-            color: #9ece6a;
+            color: #c0caf5;
         }
         #backlight {
-            color: #2ac3de;
+            color: #c0caf5;
         }
         #battery {
-            color: #7aa2f7;
+            color: #c0caf5;
         }
         #tray {
             padding: 0 5px;

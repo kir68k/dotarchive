@@ -240,7 +240,7 @@
               type = "sway";
               swaybg = {
                 enable = true;
-                image = ./modules/users/graphical/wallpapers/bg3.png;
+                image = ./modules/users/graphical/wallpapers/nix-background.png;
               };
               bar.enable = true;
               lock.enable = true;
