@@ -4,7 +4,6 @@
   lib,
   ...
 }:
-
 with lib; let
   cfg = config.ki.applications;
 in {
@@ -61,7 +60,7 @@ in {
     programs.taskwarrior.enable = true;
 
     home.activation = {
-      tasktime = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      tasktime = lib.hm.dag.entryAfter ["writeBoundary"] ''
         $DRY_RUN_CMD mkdir -p ${config.xdg.dataHome}/task/hooks/
         $DRY_RUN_CMD rm -rf ${config.xdg.dataHome}/task/hooks/on-modify.timewarrior
         $DRY_RUN_CMD cp ${pkgs.timewarrior}/share/doc/timew/ext/on-modify.timewarrior ${config.xdg.dataHome}/task/hooks/
@@ -83,7 +82,7 @@ in {
 
     services.mpd = {
       enable = true;
-      dataDir = "/home/${config.home.username}/.music/mpd";
+      dataDir = "/home/${config.home.username}/.mpd";
       musicDirectory = "/home/${config.home.username}/Music";
       network.listenAddress = "127.0.0.1";
       network.port = 6600;
@@ -111,62 +110,62 @@ in {
       mpdMusicDir = "/home/${config.home.username}/Music";
       settings = {
         # NCMPCPP Data dir, for e.g error logs
-          ncmpcpp_directory = "/home/${config.home.username}/.music/ncmpcpp";
+        ncmpcpp_directory = "/home/${config.home.username}/.music/ncmpcpp";
         # MPD settings, connect to our local MPD instance
-          mpd_host = "${config.services.mpd.network.listenAddress}";
-          mpd_port = "${builtins.toString config.services.mpd.network.port}";
+        mpd_host = "${config.services.mpd.network.listenAddress}";
+        mpd_port = "${builtins.toString config.services.mpd.network.port}";
         # Visualizer settings
-          visualizer_data_source = "/tmp/mpd.fifo";
-          visualizer_output_name = "FIFO";
-          visualizer_in_stereo = "yes";
-          visualizer_type = "spectrum";
-          visualizer_look = "●|";
-          visualizer_autoscale = "yes";
-          visualizer_fps = "56";
+        visualizer_data_source = "/tmp/mpd.fifo";
+        visualizer_output_name = "FIFO";
+        visualizer_in_stereo = "yes";
+        visualizer_type = "spectrum";
+        visualizer_look = "●|";
+        visualizer_autoscale = "yes";
+        visualizer_fps = "56";
         # Cosmetic settings
-          colors_enabled = "yes";
-          volume_color = "white";
-          state_line_color = "green";
-          state_flags_color = "white";
-          main_window_color = "white";
-          header_window_color = "white";
-          statusbar_color = "white";
-          autocenter_mode = "yes";
-          window_border_color = "green";
-          alternative_ui_separator_color = "green";
-          empty_tag_color = "yellow";
-          color1 = "white";
-          color2 = "green";
+        colors_enabled = "yes";
+        volume_color = "white";
+        state_line_color = "green";
+        state_flags_color = "white";
+        main_window_color = "white";
+        header_window_color = "white";
+        statusbar_color = "white";
+        autocenter_mode = "yes";
+        window_border_color = "green";
+        alternative_ui_separator_color = "green";
+        empty_tag_color = "yellow";
+        color1 = "white";
+        color2 = "green";
 
-          current_item_prefix = "$3$r";
-          current_item_suffix = "$/r$9";
+        current_item_prefix = "$3$r";
+        current_item_suffix = "$/r$9";
 
-          progressbar_look = "━━╸";
-          progressbar_color = "white";
-          progressbar_elapsed_color = "green";
+        progressbar_look = "━━╸";
+        progressbar_color = "white";
+        progressbar_elapsed_color = "green";
 
-          user_interface = "alternative";
-          alternative_header_first_line_format = "$3$aqqu$/a$9 $4{%40f}|{%t}$9 $3$atqq$/a$9";
-          alternative_header_second_line_format = "$3$aqqu$/a$9 $5$b{%a}|{%D}$/b$9 $3$atqq$/a$9";
-          
-          current_item_inactive_column_prefix = "yellow";
-          current_item_inactive_column_suffix = "yellow";
+        user_interface = "alternative";
+        alternative_header_first_line_format = "$3$aqqu$/a$9 $4{%40f}|{%t}$9 $3$atqq$/a$9";
+        alternative_header_second_line_format = "$3$aqqu$/a$9 $5$b{%a}|{%D}$/b$9 $3$atqq$/a$9";
 
-          song_list_format = "{$4%a$9 - }{$8%t$9}|{$0%f$9} - {$7(%l)$9}";
-          song_library_format = "{$4%n$9 - }{$0%t$9}|{$4%f$9}";
-          browser_playlist_prefix = "$7playlist$9 ";
-          selected_item_prefix = "$0";
-          selected_item_suffix = "$9";
+        current_item_inactive_column_prefix = "yellow";
+        current_item_inactive_column_suffix = "yellow";
 
-          song_status_format = "{(%l) }{%a - }{%t}|{%f}";
-          song_window_title_format = "{%a - }{%t}|{%f}";
-          song_columns_list_format = "(7f)[blue]{l} (15)[red]{a} (55)[green]{t|f} (30)[yellow]{b}";
+        song_list_format = "{$4%a$9 - }{$8%t$9}|{$0%f$9} - {$7(%l)$9}";
+        song_library_format = "{$4%n$9 - }{$0%t$9}|{$4%f$9}";
+        browser_playlist_prefix = "$7playlist$9 ";
+        selected_item_prefix = "$0";
+        selected_item_suffix = "$9";
 
-          playlist_display_mode = "columns";
-          browser_display_mode = "classic";
-          search_engine_display_mode = "columns";
-          incremental_seeking = "yes";
-          external_editor = "vim";
+        song_status_format = "{(%l) }{%a - }{%t}|{%f}";
+        song_window_title_format = "{%a - }{%t}|{%f}";
+        song_columns_list_format = "(7f)[blue]{l} (15)[red]{a} (55)[green]{t|f} (30)[yellow]{b}";
+
+        playlist_display_mode = "columns";
+        browser_display_mode = "classic";
+        search_engine_display_mode = "columns";
+        incremental_seeking = "yes";
+        external_editor = "vim";
       };
     };
   };

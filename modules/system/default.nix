@@ -16,6 +16,7 @@
     ./laptop
     ./network
     ./relativity
+    ./rrStack
     ./security
     #./secrets
     #./ssh

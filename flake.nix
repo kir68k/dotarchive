@@ -157,6 +157,10 @@
         core.time = "cph";
         greetd.enable = true;
         ipfs.enable = true;
+        rrStack = {
+          enable = true;
+          lidarr.enable = true;
+        };
         tty = {
           enable = true;
           enableEarly = true;
