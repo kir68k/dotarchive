@@ -12,6 +12,7 @@
     ./gnome
     ./graphical
     ./greetd
+    ./ipfs
     ./laptop
     ./network
     ./relativity

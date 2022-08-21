@@ -156,6 +156,7 @@
         networking.interfaces = ["wlp3s0"];
         core.time = "cph";
         greetd.enable = true;
+        ipfs.enable = true;
         tty = {
           enable = true;
           enableEarly = true;
@@ -200,7 +201,7 @@
     defaultDesktopUser =
       defaultUser
       // {
-        groups = defaultUser.groups ++ ["networkmanager" "video" "libvirtd" "kvm"];
+        groups = defaultUser.groups ++ ["networkmanager" "video" "libvirtd" "kvm" "ipfs"];
       };
   in {
     installMedia = {

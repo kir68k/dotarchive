@@ -4,9 +4,9 @@
   lib,
   ...
 }:
-
 with lib; let
   cfg = config.ki.graphical.applications;
+  systemCfg = config.machineData.systemConfig;
 in {
   options.ki.graphical.applications.firefox = {
     enable = mkEnableOption "Enable Firefox configured";
@@ -15,28 +15,34 @@ in {
   config = mkIf cfg.firefox.enable {
     programs.firefox = {
       enable = true;
-      extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-        bypass-paywalls-clean
-        darkreader
-        metamask
-        ublock-origin
-        sponsorblock
-        clearurls
-        cookie-autodelete
-        (buildFirefoxXpiAddon {
-          pname = "tokyo-night-v2";
-          addonId = "tokyo-night-v2@fun840";
-          version = "1.0";
-          url = "https://addons.mozilla.org/firefox/downloads/file/3872556/tokyo_night_v2-1.0.xpi";
-          sha256 = "NemfZYTUUEEpFsla89w87fTHlGV8VLvB3ekAokiAzfk=";
+      extensions = with pkgs.nur.repos.rycee.firefox-addons;
+        [
+          bypass-paywalls-clean
+          darkreader
+          metamask
+          ublock-origin
+          sponsorblock
+          clearurls
+          cookie-autodelete
+          (buildFirefoxXpiAddon {
+            pname = "tokyo-night-v2";
+            addonId = "tokyo-night-v2@fun840";
+            version = "1.0";
+            url = "https://addons.mozilla.org/firefox/downloads/file/3872556/tokyo_night_v2-1.0.xpi";
+            sha256 = "NemfZYTUUEEpFsla89w87fTHlGV8VLvB3ekAokiAzfk=";
 
-          meta = with lib; {
-            description = "Tokyo Night theme";
-            license = pkgs.lib.licenses.cc-by-nc-sa-30;
-            platforms = pkgs.lib.platforms.all;
-          };
-        })
-      ];
+            meta = with lib; {
+              description = "Tokyo Night theme";
+              license = pkgs.lib.licenses.cc-by-nc-sa-30;
+              platforms = pkgs.lib.platforms.all;
+            };
+          })
+        ]
+        ++ (
+          if (systemCfg.ipfs.enable == true)
+          then with pkgs.nur.repos.rycee.firefox-addons; [ipfs-companion]
+          else []
+        );
       profiles = {
         personal = {
           id = 0;
