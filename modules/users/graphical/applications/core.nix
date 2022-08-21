@@ -27,6 +27,7 @@ in {
       ffmpeg
       imagemagick
       ardour
+      sage
 
       # Utilities
       okular

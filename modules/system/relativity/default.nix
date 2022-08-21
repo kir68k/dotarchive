@@ -44,11 +44,9 @@ in {
         };
       };
       services.xserver.dpi = 180;
-      # TODO should this be here does this work what another 3 AM todo ffs
       environment.variables = {
         GDK_SCALE = "1.5";
         GDK_DPI_SCALE = "0.5";
-        _JAVA_OPTIONS = "-Dsun.java2d.uiScale=1.5";
       };
 
       services.xserver.displayManager.sessionCommands = ''

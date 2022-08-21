@@ -30,14 +30,14 @@ in {
 
           # Color scheme
           normal = {
-            black = "0x414868";
-            red = "0xF7768E";
-            green = "0x9ECE6A";
-            yellow = "0xE0AF68";
-            blue = "0x7AA2F7";
-            magenta = "0xBB9AF7";
-            cyan = "0x7DCFFF";
-            white = "0xC0CAF5";
+            black =     "0x414868";
+            red =       "0xF7768E";
+            green =     "0x9ECE6A";
+            yellow =    "0xE0AF68";
+            blue =      "0x7AA2F7";
+            magenta =   "0xBB9AF7";
+            cyan =      "0x7DCFFF";
+            white =     "0xC0CAF5";
           };
         };
 

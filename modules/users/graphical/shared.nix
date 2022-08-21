@@ -12,6 +12,18 @@ in {
     home = {
       sessionVariables = {
         QT_QPA_PLATFORMTHEME = "qt5ct";
+        _JAVA_OPTIONS =
+          [
+            "-Dawt.useSystemAAFontSettings=on"
+            "-Dswing.aatext=true"
+            "-Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel"
+            "-Dswing.crossplatformlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel"
+          ]
+          ++ (
+            if (systemCfg.relativity.enable == true)
+            then ["-Dsun.java2d.uiScale=1.5"]
+            else [""]
+          );
       };
 
       packages = with pkgs;

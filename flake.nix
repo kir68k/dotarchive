@@ -232,6 +232,10 @@
             applications = {
               enable = true;
               firefox.enable = true;
+              java = {
+                enable = true;
+                pkg = pkgs.jdk17;
+              };
               nextcloud.enable = true;
               libreoffice.enable = true;
             };
