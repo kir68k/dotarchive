@@ -20,7 +20,7 @@ in {
 
   config = mkIf (cfg.enable) (mkMerge [
     {
-      boot.kernelParams = [ "mem_sleep_default=deep" ];
+      boot.kernelParams = [ "mem_sleep_default=deep" "intel_pstate=no_hwp" ];
       boot.extraModprobeConfig = ''
         options i915 enable_guc=3
         options i915 enable_fbc=1

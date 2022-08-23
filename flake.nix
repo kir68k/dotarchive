@@ -188,6 +188,11 @@
           keepEnv = true;
           persist = true;
         };
+        tor = {
+          enable = true;
+          client.enable = true;
+          client.useBridges = true;
+        };
         #secrets.identityPaths = [ secrets.age.system.relativity.privateKeyPath ];
       }
     ];

@@ -38,7 +38,10 @@ in {
       buku
       yt-dlp
 
-      # Dev
+      # Run commands/programs through a specified proxy
+      proxychains-ng
+
+      # Nix code formatting
       alejandra
 
       # Messaging
@@ -91,11 +94,11 @@ in {
           type        "pipewire"
           name        "PipeWire Sound Server"
         }
+
         audio_output {
-          type    "fifo"
-          name    "FIFO"
-          path    "/tmp/mpd.fifo"
-          format  "44100:16.2"
+          type        "fifo"
+          name        "FIFO audio output for visualization"
+          path        "/tmp/mpd.fifo"
         }
       '';
     };

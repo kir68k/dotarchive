@@ -6,7 +6,6 @@
   inputs,
   utils,
 }:
-
 with builtins;
 with utils; {
   mkISO = {
@@ -24,7 +23,7 @@ with utils; {
 
       modules = [
         {
-          imports = [ ../modules/iso ];
+          imports = [../modules/iso];
 
           networking.hostName = "${name}";
           networking.networkmanager.enable = true;
@@ -85,7 +84,7 @@ with utils; {
       modules =
         [
           {
-            imports = [(import ../modules/system { inherit inputs; })] ++ sys_users;
+            imports = [(import ../modules/system {inherit inputs;})] ++ sys_users;
 
             ki = systemConfigStripped;
             environment.etc = {

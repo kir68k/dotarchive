@@ -20,6 +20,7 @@
     ./security
     #./secrets
     #./ssh
+    ./tor
     ./tty
     ./virtualisation
   ];

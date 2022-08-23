@@ -102,11 +102,11 @@ in {
               "PLATFORM_PROFILE_ON_BAT" = "performance";
               "CPU_HWP_DYN_BOOST_ON_AC" = 1;
               "CPU_HWP_DYN_BOOST_ON_BAT" = 0;
-              "INTEL_GPU_MIN_FREQ_ON_AC" = 0;
-              "INTEL_GPU_MIN_FREQ_ON_BAT" = 0;
-              "INTEL_GPU_MAX_FREQ_ON_AC" = 0;
+              "INTEL_GPU_MIN_FREQ_ON_AC" = 100;
+              "INTEL_GPU_MIN_FREQ_ON_BAT" = 100;
+              "INTEL_GPU_MAX_FREQ_ON_AC" = 800;
               "INTEL_GPU_MAX_FREQ_ON_BAT" = 800;
-              "INTEL_GPU_BOOST_FREQ_ON_AC" = 0;
+              "INTEL_GPU_BOOST_FREQ_ON_AC" = 1000;
               "INTEL_GPU_BOOST_FREQ_ON_BAT" = 1000;
             }
             else {}

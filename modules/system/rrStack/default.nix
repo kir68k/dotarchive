@@ -6,6 +6,29 @@
 }:
 with lib; let
   cfg = config.ki.rrStack;
+  mainDir = "/rrStack";
+  liDirSetup = with pkgs;
+    writeShellScriptBin "liDirSetup" ''
+      liDir="${mainDir}/lidarr"
+      if [ ! -e ${mainDir} ]; then
+        mkdir ${mainDir} && chown -R root:rrStack ${mainDir}
+        chmod -R 774 ${mainDir}
+      fi
+
+      if [ ! -e $liDir ]; then
+        mkdir $liDir && chown -R lidarr:rrStack $liDir
+      fi
+    '';
+  soDirSetup = with pkgs;
+    writeShellScriptBin "soDirSetup" ''
+      ${substituteInPlace} ${liDirSetup}/bin/liDirSetup --replace "lidarr" "sonarr" \
+        --replace "liDir" "soDir"
+    '';
+  raDirSetup = with pkgs;
+    writeShellScriptBin "raDirSetup" ''
+      ${substituteInPlace} ${liDirSetup}/bin/liDirSetup --replace "lidarr" "radarr" \
+        --replace "liDir" "raDir"
+    '';
 in {
   options.ki.rrStack = {
     enable = mkEnableOption "Enable configuration for rr-programs";
@@ -23,7 +46,7 @@ in {
       enable = mkEnableOption "Enable Radarr";
       dataDir = mkOption {
         type = types.str;
-        default = "/var/lib/radarr/.config/Radarr";
+        default = "${mainDir}/radarr";
         description = "Data file directory";
       };
     };
@@ -32,7 +55,7 @@ in {
       enable = mkEnableOption "Enable Sonarr";
       dataDir = mkOption {
         type = types.str;
-        default = "/var/lib/sonarr/.config/Radarr";
+        default = "${mainDir}/sonarr";
         description = "Data file directory";
       };
     };
@@ -41,7 +64,7 @@ in {
       enable = mkEnableOption "Enable Lidarr";
       dataDir = mkOption {
         type = types.str;
-        default = "/var/lib/lidarr/.config/Radarr";
+        default = "${mainDir}/lidarr";
         description = "Data file directory";
       };
     };
@@ -65,6 +88,59 @@ in {
         enable = true;
         dataDir = cfg.lidarr.dataDir;
         openFirewall = cfg.common.openFirewall;
+      };
+    };
+
+    users = {
+      users = {
+        radarr = mkIf (cfg.radarr.enable) {
+          name = "radarr";
+          group = "radarr";
+          extraGroups = ["rrStack"];
+        };
+
+        sonarr = mkIf (cfg.sonarr.enable) {
+          name = "sonarr";
+          group = "sonarr";
+          extraGroups = ["rrStack"];
+        };
+
+        lidarr = mkIf (cfg.lidarr.enable) {
+          name = "lidarr";
+          group = "lidarr";
+          extraGroups = ["rrStack"];
+        };
+      };
+      groups = {
+        rrStack = {
+          members = ["radarr" "sonarr" "lidarr"];
+        };
+      };
+    };
+
+    # Home directory has 700 perms, can't put dirs in e.g ~/Lidarr...
+    # TODO maybe change the way this works?
+    # TODO make this more fugging efficient you fat
+    systemd.services = {
+      radarr = mkIf (cfg.radarr.enable) {
+        serviceConfig = {
+          ExecStartPre = "${raDirSetup}/bin/raDirSetup";
+          PermissionsStartOnly = true;
+        };
+      };
+
+      sonarr = mkIf (cfg.sonarr.enable) {
+        serviceConfig = {
+          ExecStartPre = "${soDirSetup}/bin/soDirSetup";
+          PermissionsStartOnly = true;
+        };
+      };
+
+      lidarr = mkIf (cfg.lidarr.enable) {
+        serviceConfig = {
+          ExecStartPre = "${liDirSetup}/bin/liDirSetup";
+          PermissionsStartOnly = true;
+        };
       };
     };
   };
