@@ -86,7 +86,7 @@ in {
     services.mpd = {
       enable = true;
       dataDir = "/home/${config.home.username}/.mpd";
-      musicDirectory = "/home/${config.home.username}/Music";
+      musicDirectory = "/home/${config.home.username}/Nextcloud/Music";
       network.listenAddress = "127.0.0.1";
       network.port = 6600;
       extraConfig = ''

@@ -69,9 +69,15 @@ in {
           };
           # I can't find a fuging way to add bridge attributes here
           # services.tor.extraConfig was removed so bruh
-          settings = mkIf (cfg.client.useBridges) {
+          settings = mkIf (cfg.client.bridges.enable) {
             UseBridges = "1";
             ClientTransportPlugin = "obfs4 exec ${pkgs.obfs4}/bin/obfs4proxy";
+            # Idek if these work, I just HAD to set *something* here or else Tor wouldn't start
+            "bridge" = [
+              "obfs4 163.172.189.163:80 CB228CB122E3013FC1057FCD2006E8553E25F1CC cert=I3wBfenslUHKObVuLN5JfEUe4rwBAG3cU8mmdwdGd4yXTpwUvGcRg13nZeCZR4G9us6ALw iat-mode=0"
+              "obfs4 23.234.193.87:32490 EBB4057F2490347EF9D7ABB5FCD715C06369721E cert=3oRwMDuyUCbpKeAQfmQgZevXU6Fn2D3NXP3OZK2itsCi8iHcfTKQvJ3zL1l1BoSTEmduew iat-mode=0"
+              "obfs4 142.47.223.227:8443 38866E175AE605CE22CBE44B6656E27360AF5340 cert=jIGl6AX6qSq0C7WoqBOP3kY7Tlere8r3SRQ+noCP/PiT7yToLcVYe9RlCkwrBKyptMG/Fg iat-mode=0"
+            ];
           };
         };
       })

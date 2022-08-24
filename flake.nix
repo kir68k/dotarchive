@@ -191,7 +191,7 @@
         tor = {
           enable = true;
           client.enable = true;
-          #client.useBridges = true;
+          client.bridges.enable = true;
         };
         #secrets.identityPaths = [ secrets.age.system.relativity.privateKeyPath ];
       }
