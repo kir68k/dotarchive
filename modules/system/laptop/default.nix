@@ -81,7 +81,7 @@ in {
             "CPU_MIN_PERF_ON_AC" = 0;
             "CPU_MAX_PERF_ON_AC" = 100;
             "CPU_MIN_PERF_ON_BAT" = 0;
-            "CPU_MAX_PERF_ON_BAT" = 50;
+            "CPU_MAX_PERF_ON_BAT" = 70;
             "CPU_BOOST_ON_AC" = 1;
             "CPU_BOOST_ON_BAT" = 0;
             "SCHED_POWERSAVE_ON_AC" = 0;
@@ -97,13 +97,13 @@ in {
             if config.ki.relativity.enable == true
             then {
               "CPU_ENERGY_PERF_POLICY_ON_AC" = "performance";
-              "CPU_ENERGY_PERF_POLICY_ON_BAT" = "power";
-              "PLATFORM_PROFILE_ON_AC" = "power";
-              "PLATFORM_PROFILE_ON_BAT" = "performance";
+              "CPU_ENERGY_PERF_POLICY_ON_BAT" = "schedutil";
+              "PLATFORM_PROFILE_ON_AC" = "performance";
+              "PLATFORM_PROFILE_ON_BAT" = "balanced";
               "CPU_HWP_DYN_BOOST_ON_AC" = 1;
               "CPU_HWP_DYN_BOOST_ON_BAT" = 0;
-              "INTEL_GPU_MIN_FREQ_ON_AC" = 100;
-              "INTEL_GPU_MIN_FREQ_ON_BAT" = 100;
+              "INTEL_GPU_MIN_FREQ_ON_AC" = 300;
+              "INTEL_GPU_MIN_FREQ_ON_BAT" = 300;
               "INTEL_GPU_MAX_FREQ_ON_AC" = 800;
               "INTEL_GPU_MAX_FREQ_ON_BAT" = 800;
               "INTEL_GPU_BOOST_FREQ_ON_AC" = 1000;

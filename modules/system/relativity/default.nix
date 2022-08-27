@@ -4,7 +4,6 @@
   lib,
   ...
 }:
-
 with lib; let
   cfg = config.ki.relativity;
 in {
@@ -20,7 +19,8 @@ in {
 
   config = mkIf (cfg.enable) (mkMerge [
     {
-      boot.kernelParams = [ "mem_sleep_default=deep" "intel_pstate=no_hwp" ];
+      environment.systemPackages = with pkgs; [linuxKernel.packages.linux_zen.cpupower];
+      boot.kernelParams = ["mem_sleep_default=deep" "intel_pstate=passive"];
       boot.extraModprobeConfig = ''
         options i915 enable_guc=3
         options i915 enable_fbc=1
@@ -30,7 +30,7 @@ in {
       services.fprintd.enable = true;
     })
     (mkIf (config.ki.graphical.enable) {
-      environment.defaultPackages = with pkgs; [ intel-gpu-tools ];
+      environment.defaultPackages = with pkgs; [intel-gpu-tools];
       hardware = {
         video.hidpi.enable = true;
         opengl = {

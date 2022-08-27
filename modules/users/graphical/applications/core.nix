@@ -17,6 +17,17 @@ in {
       geogebra # Broken on Wayland, STILL >.>
       cinnamon.nemo
       xarchiver
+      (
+        zotero.overrideAttrs
+        (_: rec {
+          version = "6.0.13";
+          src = pkgs.fetchurl {
+            url = "https://download.zotero.org/client/release/${version}/Zotero-${version}_linux-x86_64.tar.bz2";
+            sha512 = "FQrT8hOtcongn3lCL0hApKKI2Av+ZhqcBtMwGYxSAY7+AbxoYpSF/YImR5At9Z7FhivuXfE9HeEGoszYS2R5RA==";
+          };
+        })
+      )
+      qnotero
 
       # Production
       # natron # broken rn

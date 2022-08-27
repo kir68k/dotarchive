@@ -35,6 +35,9 @@ in {
       ubuntu_font_family
       terminus_font
       ibm-plex
+      roboto
+      roboto-slab
+      roboto-mono
     ];
 
     hardware.opengl = {

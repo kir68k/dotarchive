@@ -6,6 +6,7 @@
 }:
 with lib; let
   cfg = config.ki.applications;
+  systemCfg = config.machineData.systemConfig;
 in {
   options.ki.applications = {
     enable = mkEnableOption "Enable a set of common applications";
@@ -17,46 +18,52 @@ in {
       EDITOR = "vim";
     };
 
-    home.packages = with pkgs; [
-      # Notes
-      obsidian # knowledge base
-      xournalpp # drawing
-      notes-up # Markdown editor
+    home.packages = with pkgs;
+      [
+        # Notes
+        obsidian # knowledge base
+        xournalpp # drawing
+        notes-up # Markdown editor
 
-      # SSH mount
-      sshfs
+        # SSH mount
+        sshfs
 
-      # Password manager
-      keepassxc
+        # Password manager
+        keepassxc
 
-      # CLI tools
-      bat
-      glow
-      nnn
-      grit
-      timewarrior
-      buku
-      yt-dlp
+        # CLI tools
+        bat
+        glow
+        nnn
+        grit
+        timewarrior
+        buku
+        yt-dlp
 
-      # Run commands/programs through a specified proxy
-      proxychains-ng
+        # Run commands/programs through a specified proxy
+        proxychains-ng
 
-      # Nix code formatting
-      alejandra
+        # Nix code formatting
+        alejandra
 
-      # Messaging
-      teams # School sometimes uses ;w;
+        # Messaging
+        teams # School sometimes uses ;w;
 
-      # Productivity suite
-      pdftk
+        # Productivity suite
+        pdftk
 
-      # MS Calibri compatible font
-      carlito
+        # MS Calibri compatible font
+        carlito
 
-      # Calculator
-      bc
-      bitwise
-    ];
+        # Calculator
+        bc
+        bitwise
+      ]
+      ++ (
+        if systemCfg.connectivity.android.enable
+        then [android-tools android-file-transfer]
+        else []
+      );
 
     fonts.fontconfig.enable = true;
 

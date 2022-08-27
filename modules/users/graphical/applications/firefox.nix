@@ -37,6 +37,20 @@ in {
               platforms = pkgs.lib.platforms.all;
             };
           })
+          # Why can't they give a proper .xpi link
+          #(buildFirefoxXpiAddon {
+          #  pname = "zotero";
+          #  addonId = "zotero";
+          #  version = "5.0.97";
+          #  url = "https://www.zotero.org/download/connector/dl?browser=firefox&version=${version}";
+          #  sha256 = "xADC8Cjg7YbOFyrGJ+KZT/00PHet15/DqQ8w9SkfR/E=";
+          #
+          #  meta = with lib; {
+          #    description = "Collect, organize, cite, and share your research sources";
+          #    license = pkgs.lib.licenses.agpl3Only;
+          #    platforms = pkgs.lib.platforms.all;
+          #  };
+          #})
         ]
         ++ (
           if (systemCfg.ipfs.enable == true)

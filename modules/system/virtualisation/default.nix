@@ -42,10 +42,11 @@ in {
             "/nix/store/${pkgs.OVMF}/FV/OVMF.vd:/nix/store/${pkgs.OVMF}/FV/OVMF_VARS.fd"
           ]
         '';
+        package = pkgs.qemu_full;
       };
     };
 
-    boot.kernelParams = [ "intel_iommu=on" ];
-    boot.kernelModules = [ "vfio" "vfio_iommu_type1" "vfio_pci" "vfio_virqfd" ];
+    boot.kernelParams = ["intel_iommu=on"];
+    boot.kernelModules = ["vfio" "vfio_iommu_type1" "vfio_pci" "vfio_virqfd"];
   };
 }

@@ -191,6 +191,40 @@ in {
       };
     };
 
+    swww = {
+      enable = mkEnableOption "Enable background [swww]";
+
+      pkg = mkOption {
+        type = types.package;
+        default = with pkgs; kipkgs.swww;
+        description = "Package to use for swww";
+      };
+
+      image = mkOption {
+        type = types.path;
+        description = "Path to the image file used for the background";
+      };
+
+      transition = {
+        step = mkOption {
+          type = types.ints.between 1 255;
+          default = 20;
+          description = "Control how smoothly the transition will happen";
+        };
+        framerate = mkOption {
+          type = types.ints.between 1 255;
+          default = 30;
+          description = "Control the transition's framerate";
+        };
+
+        type = mkOption {
+          type = types.str;
+          default = "center";
+          description = "Transition effect";
+        };
+      };
+    };
+
     bar = {
       enable = mkEnableOption "Enable status bar [waybar]";
 
@@ -227,6 +261,8 @@ in {
       (
         if cfg.swaybg.enable
         then swaybg
+        else if cfg.swww.enable
+        then kipkgs.swww
         else feh
       )
       (assert systemCfg.graphical.wayland.swaylock-pam; (
@@ -354,6 +390,56 @@ in {
         WantedBy = ["wayland-session.target"];
       };
     };
+
+    systemd.user.services.swww-init = with pkgs;
+      mkIf (cfg.swww.enable) {
+        Unit = {
+          Description = "swww initialization service";
+          Documentation = ["https://github.com/Horus645/swww/blob/main/README.md#usage"];
+          BindsTo = ["wayland-session.target"];
+          After = ["wayland-session.target"];
+          Before = ["swww.service"];
+        };
+        Service = {
+          ExecStart = "${kipkgs.swww}/bin/swww init --no-daemon";
+        };
+        Install = {
+          WantedBy = ["wayland-session.target" "swww.service"];
+        };
+      };
+    systemd.user.services.swww = with pkgs;
+      mkIf (cfg.swww.enable) {
+        Unit = {
+          Description = "swww background service";
+          Documentation = ["https://github.com/Horus645/swww/blob/main/README.md"];
+          BindsTo = ["wayland-session.target"];
+          After = ["wayland-session.target" "swww-init.service"];
+        };
+        Service = {
+          ExecStart =
+            [
+              "${kipkgs.swww}/bin/swww img ${cfg.swww.image}"
+            ]
+            ++ (
+              if (cfg.swww.transition.step != null)
+              then ["--transition-step ${toString cfg.swww.transition.step}"]
+              else [""]
+            )
+            ++ (
+              if (cfg.swww.transition.framerate != null)
+              then ["--transition-fps ${toString cfg.swww.transition.framerate}"]
+              else [""]
+            )
+            ++ (
+              if (cfg.swww.transition.type != "")
+              then ["--transition-type ${toString cfg.swww.transition.type}"]
+              else [""]
+            );
+        };
+        Install = {
+          WantedBy = ["wayland-session.target"];
+        };
+      };
 
     systemd.user.services.fehbg = mkIf cfg.fehbg.enable {
       Unit = {

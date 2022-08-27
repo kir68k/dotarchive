@@ -134,6 +134,7 @@
         };
       };
       connectivity = {
+        android.enable = true;
         bluetooth.enable = true;
         printing.enable = true;
         sound.enable = true;
@@ -160,6 +161,8 @@
         rrStack = {
           enable = true;
           lidarr.enable = true;
+          prowlarr.enable = true;
+          common.openFirewall = true;
         };
         tty = {
           enable = true;
@@ -210,7 +213,7 @@
     defaultDesktopUser =
       defaultUser
       // {
-        groups = defaultUser.groups ++ ["networkmanager" "video" "libvirtd" "kvm" "ipfs"];
+        groups = defaultUser.groups ++ ["networkmanager" "video" "libvirtd" "kvm" "ipfs" "plugdev" "rrStack"]; # TODO better way to manage this...?
       };
   in {
     installMedia = {
@@ -252,9 +255,17 @@
             wayland = {
               enable = true;
               type = "sway";
-              swaybg = {
+              #swaybg = {
+              #  enable = true;
+              #  image = ./modules/users/graphical/wallpapers/nix-background.png;
+              #};
+              swww = {
                 enable = true;
                 image = ./modules/users/graphical/wallpapers/nix-background.png;
+                transition = {
+                  framerate = 60;
+                  step = 30;
+                };
               };
               bar.enable = true;
               lock.enable = true;
