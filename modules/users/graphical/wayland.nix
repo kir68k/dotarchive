@@ -416,25 +416,7 @@ in {
           After = ["wayland-session.target" "swww-init.service"];
         };
         Service = {
-          ExecStart =
-            [
-              "${kipkgs.swww}/bin/swww img ${cfg.swww.image}"
-            ]
-            ++ (
-              if (cfg.swww.transition.step != null)
-              then ["--transition-step ${toString cfg.swww.transition.step}"]
-              else [""]
-            )
-            ++ (
-              if (cfg.swww.transition.framerate != null)
-              then ["--transition-fps ${toString cfg.swww.transition.framerate}"]
-              else [""]
-            )
-            ++ (
-              if (cfg.swww.transition.type != "")
-              then ["--transition-type ${toString cfg.swww.transition.type}"]
-              else [""]
-            );
+          ExecStart = "${kipkgs.swww}/bin/swww img ${cfg.swww.image} --transition-step ${toString cfg.swww.transition.step} --transition-fps ${toString cfg.swww.transition.framerate} --transition-type ${cfg.swww.transition.type}";
         };
         Install = {
           WantedBy = ["wayland-session.target"];

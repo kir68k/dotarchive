@@ -66,11 +66,11 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1661544694,
-        "narHash": "sha256-p8r4HWEe/1Nobupzd4jOkhu0cqSH1Y/1kqEJA6ycLXw=",
+        "lastModified": 1661573386,
+        "narHash": "sha256-pBEg8iY00Af/SAtU2dlmOAv+2x7kScaGlFRDjNoVJO8=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "0884d6c6e47e75bdd1c40045d4d73e7f6c8e5cb8",
+        "rev": "d89bdff445eadff03fe414e9c30486bc8166b72b",
         "type": "github"
       },
       "original": {
@@ -122,11 +122,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1661555085,
-        "narHash": "sha256-lbTqrZTJ+x5QbiYAc4RgvL1YNT3AlIEXUVM8VqwdLCg=",
+        "lastModified": 1661588127,
+        "narHash": "sha256-WfpJELOX10EaJ9X+Q82L9ZYSbgz9OTsa5WFzDba/qI0=",
         "ref": "refs/heads/stream",
-        "rev": "4ef0d0da5a08d8b5bcb031f15fec2ad5a067e89b",
-        "revCount": 18,
+        "rev": "4bdc40619037da208ee706ed60204c6878c4a1d0",
+        "revCount": 19,
         "type": "git",
         "url": "https://git.kirinsst.xyz/kir/kipkgs"
       },
@@ -152,11 +152,11 @@
     },
     "nur": {
       "locked": {
-        "lastModified": 1661553622,
-        "narHash": "sha256-qljmsjIgQXKJL2VW6V8ZMGOAYeY7dUTLgcbFqPab09U=",
+        "lastModified": 1661587724,
+        "narHash": "sha256-4MVLblBnx3KRsZqzzSQFxWtI8H3KWHPnI5P0nYv70qU=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "c3836a37186a240e5792891811ff2219d8c3f7ae",
+        "rev": "82fb242e6d238169846b97422f6673a366093cd2",
         "type": "github"
       },
       "original": {
