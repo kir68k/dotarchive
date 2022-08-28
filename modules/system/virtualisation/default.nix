@@ -12,10 +12,12 @@ in {
 
     lxc.enable = mkEnableOption "Enable LXC";
 
-    libvirt.enable = mkOption {
-      type = types.bool;
-      default = false;
-      description = "Enable libvirtd";
+    libvirt = {
+      enable = mkEnableOption "Enable libvirtd";
+
+      isolateCpus = {
+        enable = mkEnableOption "Isolate CPUs from the Linux scheduler and SMP balancing";
+      };
     };
   };
 
@@ -46,7 +48,13 @@ in {
       };
     };
 
-    boot.kernelParams = ["intel_iommu=on"];
+    boot.kernelParams =
+      ["intel_iommu=on"]
+      ++ (
+        if (cfg.libvirt.isolateCpus.enable && config.ki.relativity.enable)
+        then ["isolcpus=2,3,6,7"]
+        else []
+      );
     boot.kernelModules = ["vfio" "vfio_iommu_type1" "vfio_pci" "vfio_virqfd"];
   };
 }

@@ -48,7 +48,7 @@
     android-udev-rules
 
     # Setup scripts
-    scripts.setuptools
+    scripts.setupTools
 
     # vcs
     git

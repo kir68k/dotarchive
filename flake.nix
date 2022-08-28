@@ -180,7 +180,10 @@
         virtualisation = {
           enable = true;
           lxc.enable = true;
-          libvirt.enable = true;
+          libvirt = {
+            enable = true;
+            isolateCpus.enable = true;
+          };
         };
         applications = {
           steam.enable = true;
@@ -275,7 +278,10 @@
               type = "xmonad";
             };
           };
-          applications.enable = true;
+          applications = {
+            enable = true;
+            win64.enable = true;
+          };
           zsh = {
             enable = true;
             dircolors.enable = true;

@@ -251,7 +251,9 @@ in {
       (
         if (cfg.type == "sway")
         then sway
-        else dwlKi
+        else if (cfg.type == "dwl")
+        then dwlKi
+        else null
       )
       alacritty
       bemenu
@@ -259,11 +261,26 @@ in {
       libappindicator-gtk3
       mako
       (
+        wlr-randr.overrideAttrs (_: rec {
+          pname = "wlr-randr";
+          version = "2022-06-30";
+
+          src = fetchFromSourcehut {
+            owner = "~emersion";
+            repo = "${pname}";
+            rev = "d17786cf05f22a5ccbd65ce0cfdf0bab1bfc0623";
+            sha512 = "dTfj36za1afyMqoJxnkj2q1OeYaA7auUIK1CQbxumlP0eTD0/WsnqioYSgLlNsQhdjPXXNvqd59cXXhg91Jvlg==";
+          };
+        })
+      )
+      (
         if cfg.swaybg.enable
         then swaybg
         else if cfg.swww.enable
         then kipkgs.swww
-        else feh
+        else if cfg.feh.enable
+        then feh
+        else null
       )
       (assert systemCfg.graphical.wayland.swaylock-pam; (
         if cfg.lock.enable
@@ -401,6 +418,7 @@ in {
           Before = ["swww.service"];
         };
         Service = {
+          ExecStartPre = "${coreutils}/bin/sleep 0.2";
           ExecStart = "${kipkgs.swww}/bin/swww init --no-daemon";
         };
         Install = {
@@ -414,6 +432,7 @@ in {
           Documentation = ["https://github.com/Horus645/swww/blob/main/README.md"];
           BindsTo = ["wayland-session.target"];
           After = ["wayland-session.target" "swww-init.service"];
+          Requires = ["swww-init.service"];
         };
         Service = {
           ExecStart = "${kipkgs.swww}/bin/swww img ${cfg.swww.image} --transition-step ${toString cfg.swww.transition.step} --transition-fps ${toString cfg.swww.transition.framerate} --transition-type ${cfg.swww.transition.type}";
