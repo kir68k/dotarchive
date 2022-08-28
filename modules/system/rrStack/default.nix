@@ -197,8 +197,6 @@ in {
     };
 
     # Home directory has 700 perms, can't put dirs in e.g ~/Lidarr...
-    # TODO maybe change the way this works?
-    # TODO make this more fugging efficient you fat
     systemd.services = {
       jackett = mkIf (cfg.jackett.enable) {
         serviceConfig = {

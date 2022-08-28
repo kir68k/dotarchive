@@ -61,32 +61,6 @@ in {
       krita
       ffmpegthumbnailer
       gimp
-      # TODO doesn't seem to build, too tired rn to find out why
-      #(gimp.override rec {
-      #  gtk2 = gtk3;
-      #  gtk-mac-integration-gtk2 = gtk-mac-integration;
-      #})
-      #(gimp.overrideAttrs (_: rec {
-      #  pname = "gimp";
-      #  version = "2.99.10";
-      #  src = fetchurl {
-      #    url = "http://download.gimp.org/pub/gimp/v${lib.versions.majorMinor version}/${pname}-${version}.tar.bz2";
-      #    sha256 = "ngjxxKRV6N1N0Fef4olBnjjINds448DUDNETf7ARLyk=";
-      #  };
-      #
-      #  patches = [
-      #    (substituteAll {
-      #      src = ./patches/remove-cc-reference.patch;
-      #      cc_version = stdenv.cc.cc.name;
-      #    })
-      #  ];
-      #
-      #  buildInputs = gimpBuildInputs;
-      #
-      #  passthru = {
-      #    gtk = gtk3;
-      #  };
-      #}))
     ];
 
     xdg.configFile."vimiv/vimiv.conf" = {

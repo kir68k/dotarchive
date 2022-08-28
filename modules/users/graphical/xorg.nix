@@ -4,7 +4,6 @@
   lib,
   ...
 }:
-
 with lib; let
   cfg = config.ki.graphical.xorg;
   systemCfg = config.machineData.systemConfig;
@@ -13,7 +12,7 @@ in {
     enable = mkEnableOption "Enable X11 for HM user";
 
     type = mkOption {
-      type = types.enum [ "xmonad" ];
+      type = types.enum ["xmonad"];
       default = null;
       description = "Which DE/WM to use, currently only `xmonad`";
     };
@@ -31,10 +30,10 @@ in {
       xmobar
     ];
 
-    xsession.windowManager.xmonad = (mkIf (cfg.type == "xmonad") {
+    xsession.windowManager.xmonad = mkIf (cfg.type == "xmonad") {
       enable = true;
       enableContribAndExtras = true;
-      haskellPackages = with pkgs; [ # Necessary? TODO
+      haskellPackages = with pkgs; [
         haskellPackages.dbus
         haskellPackages.List
         haskellPackages.monad-logger
@@ -42,6 +41,6 @@ in {
         haskellPackages.xmonad-extras
       ];
       config = ./xmonad/xmonad.hs;
-    });
+    };
   };
 }

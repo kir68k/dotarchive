@@ -6,3 +6,7 @@
 
 - [ ] Migrate server config here
     - Currently the server config resides on a different repo, with a way different structure and foundation. It is less flexible and harder to change than this one.
+
+- [ ] Better handling of user groups
+    - In `flake.nix` there's a quite long list of user groups, under line 219 (As of commit 9fd276).
+    - From one side, I think I should change the way this works, but from another side NixOS won't add you to any of those groups if they don't exist, they aren't made automatically, but by their respective service... because of that, I think it's also okay to leave it the way this is.

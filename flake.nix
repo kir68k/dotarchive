@@ -93,7 +93,7 @@
     pkgs = import nixpkgs {
       inherit system overlays;
       config = {
-        allowUnfree = true; # Do I need? TODO
+        allowUnfree = true;
       };
     };
 
@@ -216,7 +216,7 @@
     defaultDesktopUser =
       defaultUser
       // {
-        groups = defaultUser.groups ++ ["networkmanager" "video" "libvirtd" "kvm" "ipfs" "plugdev" "rrStack"]; # TODO better way to manage this...?
+        groups = defaultUser.groups ++ ["networkmanager" "video" "libvirtd" "kvm" "ipfs" "plugdev" "rrStack"];
       };
   in {
     installMedia = {

@@ -14,8 +14,14 @@ in {
       enable = mkEnableOption "Enable a fully configured Tor relay";
       name = mkOption {
         type = types.str;
-        default = config.networking.hostName; # TODO disable this? Just how private can a hostname be :|
-        description = "Name of your Tor relay, defaults to your hostname";
+        default = config.networking.hostName;
+        description = "Name of your Tor relay, defaults to your hostname, but it is recommended to set it to whatever other value.";
+      };
+
+      contact = mkOption {
+        type = types.str;
+        default = "";
+        description = "Contact info that will get listed on your relay's page (metrics.torproject.org), a recommended setting would be your email address.";
       };
     };
     client = {
@@ -55,7 +61,7 @@ in {
             Sandbox = true;
             DirPort = 9030;
             DNSPort = "auto";
-            ContactInfo = builtins.toString null; # TODO set this >.>
+            ContactInfo = cfg.relay.contact;
           };
         };
       })
