@@ -18,6 +18,7 @@
     ./relativity
     ./rrStack
     ./security
+    ./services
     #./secrets
     #./ssh
     ./tor
