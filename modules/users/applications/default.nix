@@ -6,6 +6,7 @@
 }: {
   imports = [
     ./applications.nix
+    ./tmux.nix
     ./windows.nix
   ];
 }

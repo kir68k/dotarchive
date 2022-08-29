@@ -19,6 +19,8 @@ in {
         enable = mkEnableOption "Isolate CPUs from the Linux scheduler and SMP balancing";
       };
     };
+
+    docker.enable = mkEnableOption "Enable Docker";
   };
 
   config = mkIf cfg.enable {
@@ -31,6 +33,8 @@ in {
       options kvm report_ignored_msrs=0
     '';
     virtualisation.lxc.enable = cfg.lxc.enable;
+
+    virtualisation.docker.enable = cfg.docker.enable;
 
     virtualisation.libvirtd = mkIf cfg.libvirt.enable {
       enable = true;

@@ -179,6 +179,7 @@
         };
         virtualisation = {
           enable = true;
+          docker.enable = true;
           lxc.enable = true;
           libvirt = {
             enable = true;
@@ -216,7 +217,7 @@
     defaultDesktopUser =
       defaultUser
       // {
-        groups = defaultUser.groups ++ ["networkmanager" "video" "libvirtd" "kvm" "ipfs" "plugdev" "rrStack"];
+        groups = defaultUser.groups ++ ["networkmanager" "video" "libvirtd" "docker" "kvm" "ipfs" "plugdev" "rrStack"];
       };
   in {
     installMedia = {
