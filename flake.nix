@@ -180,6 +180,7 @@
         virtualisation = {
           enable = true;
           docker.enable = true;
+          flatpak.enable = true;
           lxc.enable = true;
           libvirt = {
             enable = true;
@@ -265,10 +266,11 @@
               #};
               swww = {
                 enable = true;
-                image = ./modules/users/graphical/wallpapers/nix-background.png;
+                image = ./modules/users/graphical/wallpapers/dark1.png;
                 transition = {
                   framerate = 60;
-                  step = 30;
+                  step = 60;
+                  type = "random";
                 };
               };
               bar.enable = true;

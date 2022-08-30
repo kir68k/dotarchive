@@ -10,6 +10,9 @@ in {
   options.ki.virtualisation = {
     enable = mkEnableOption "Enable virtualization options";
 
+    # TODO should this be under virtualisation? IIRC Flatpak doesn't use as many virtualisation techniques as Snap or Docker.
+    flatpak.enable = mkEnableOption "Enable Flatpak";
+
     lxc.enable = mkEnableOption "Enable LXC";
 
     libvirt = {
@@ -51,6 +54,8 @@ in {
         package = pkgs.qemu_full;
       };
     };
+
+    services.flatpak.enable = cfg.flatpak.enable;
 
     boot.kernelParams =
       ["intel_iommu=on"]

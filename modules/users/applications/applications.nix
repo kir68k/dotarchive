@@ -69,6 +69,9 @@ in {
         else []
       );
 
+    # FIXME don't use `/home/ki`, what if in the future I set another username..?
+    xdg.systemDirs.data = mkIf systemCfg.virtualisation.flatpak.enable ["/home/ki/.local/share/flatpak" "/var/lib/flatpak"];
+
     fonts.fontconfig.enable = true;
 
     programs.taskwarrior.enable = true;
