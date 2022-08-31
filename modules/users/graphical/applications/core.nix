@@ -35,7 +35,6 @@ in {
       openshot-qt
       darktable
       rawtherapee
-      ffmpeg
       imagemagick
       ardour
       sage

@@ -259,19 +259,24 @@
             };
             wayland = {
               enable = true;
-              type = "sway";
+              type = "wayfire";
               #swaybg = {
               #  enable = true;
               #  image = ./modules/users/graphical/wallpapers/nix-background.png;
               #};
               swww = {
                 enable = true;
-                image = ./modules/users/graphical/wallpapers/dark1.png;
+                image = ./modules/users/graphical/wallpapers/bg1.gif;
                 transition = {
                   framerate = 60;
-                  step = 60;
+                  step = 180;
                   type = "random";
                 };
+              };
+              wlsunset = {
+                enable = true;
+                lat = "55";
+                long = "12";
               };
               bar.enable = true;
               lock.enable = true;

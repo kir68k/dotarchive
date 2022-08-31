@@ -31,6 +31,146 @@ with lib; let
     systemctl --user start dwl-session.target
   '';
 
+  wayfireStartup = pkgs.writeShellScriptBin "wayfire-setup" ''
+    if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
+      eval $(dbus-launch --exit-with-session --sh-syntax)
+    fi
+
+    ## https://bbs.archlinux.org/viewtopic.php?id=224652
+    if command -v dbus-update-activation-environment >/dev/null 2>&1; then
+      dbus-update-activation-environment --systemd --all
+    fi
+
+    systemctl --user restart xdg-desktop-portal-gtk.service
+    systemctl --user start wayfire-session.target
+  '';
+  wayfireConfig = let
+    term = "${pkgs.alacritty}/bin/alacritty --config-file=/home/ki/.config/alacritty/alacritty.yml";
+  in ''
+    [autostart]
+    startup = ${wayfireStartup}/bin/wayfire-setup
+    autostart_wf_shell = false
+    notifications = mako
+
+    [input]
+    xkb_layout = dk
+    xkb_variant = nodeadkeys
+    cursor_size = 24
+
+    ${
+      if (systemCfg.relativity.enable)
+      then ''
+        [output:eDP-1]
+        mode = 2560x1440@59998001 # i feel weird not having a decimal dot here ;_;
+        position = 0,0
+        transform = normal
+        scale = 2.000000
+      ''
+      else ""
+    }
+
+    [core]
+    plugins = \
+      alpha \
+      autostart \
+      command \
+      decoration \
+      expo \
+      fast-switcher \
+      grid \
+      move \
+      oswitch \
+      place \
+      resize \
+      switcher \
+      vswitch \
+      window-rules \
+      wm-actions \
+      wobbly
+
+    close_top_view = <super> KEY_Q | <alt> KEY_F4
+
+    vwidth = 3
+    vheight = 3
+
+    preferred_decoration_mode = client
+
+    [move]
+    activate = <super> BTN_LEFT
+
+    [resize]
+    activate = <super> BTN_RIGHT
+
+    [alpha]
+    modifier = <super> <alt>
+
+
+    [command]
+    binding_terminal = <super> KEY_ENTER
+    command_terminal = ${term}
+
+    binding_launcher = <super> KEY_SPACE
+    command_launcher = ${pkgs.j4-dmenu-desktop}/bin/j4-dmenu-desktop --dmenu="BEMENU_SCALE=2 ${pkgs.bemenu}/bin/bemenu -i -l 8 --scrollbar autohide" --term="$term" --no-generic
+
+    binding_logout = <super> KEY_SHIFT KEY_Q
+    command_logout = wlogout
+
+    binding_screenshot = KEY_PRINT
+    command_screenshot = grim $(date '+%F_%T').png
+    binding_screenshot_interactive = <shift> KEY_PRINT
+    command_screenshot_interactive = slurp | grim -g - $(date '+%F_%T').png
+
+    repeatable_binding_volume_up = KEY_VOLUMEUP
+    command_volume_up = ${pkgs.scripts.soundTools}/bin/stools vol up 5
+    repeatable_binding_volume_down = KEY_VOLUMEDOWN
+    command_volume_down = ${pkgs.scripts.soundTools}/bin/stools vol down 5
+    binding_mute = KEY_MUTE
+    command_mute = ${pkgs.scripts.soundTools}/bin/stools vol toggle
+
+    repeatable_binding_light_up = KEY_BRIGHTNESSUP
+    command_light_up = light -A 5
+    repeatable_binding_light_down = KEY_BRIGHTNESSDOWN
+    command_light_down = light -U 5
+
+    [wm-actions]
+    toggle_fullscreen = <super> KEY_F
+    toggle_always_on_top = <super> KEY_X
+    toggle_sticky = <super> <shift> KEY_X
+
+    [switcher]
+    next_view = <alt> KEY_TAB
+    prev_view = <alt> <shift> KEY_TAB
+
+    [fast-switcher]
+    activate = <alt> KEY_ESC
+
+    [vswitch]
+    binding_left = <super> KEY_H
+    binding_down = <super> KEY_J
+    binding_up = <super> KEY_K
+    binding_right = <super> KEY_L
+    with_win_left = <super> <shift> KEY_H
+    with_win_down = <super> <shift> KEY_J
+    with_win_up = <super> <shift> KEY_K
+    with-win_right = <super> <shift> KEY_L
+
+    [expo]
+    toggle = <super>
+
+    select_workspace_1 = KEY_1
+    select_workspace_2 = KEY_2
+    select_workspace_3 = KEY_3
+    select_workspace_4 = KEY_4
+    select_workspace_5 = KEY_5
+    select_workspace_6 = KEY_6
+    select_workspace_7 = KEY_7
+    select_workspace_8 = KEY_8
+    select_workspace_9 = KEY_9
+
+    [oswitch]
+    next_output = <super> KEY_O
+    next_output_with_win <super> <shift> KEY_O
+  '';
   swayStartup = pkgs.writeShellScriptBin "sway-setup" ''
     if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
       eval $(dbus-launch --exit-with-session --sh-syntax)
@@ -151,8 +291,30 @@ in {
     enable = mkEnableOption "Enable Wayland";
 
     type = mkOption {
-      type = types.enum ["sway" "dwl"];
-      description = "Which DE/WM to use, currently `sway` and `[dwl]`";
+      type = types.enum ["dwl" "wayfire" "sway"];
+      description = "Which DE/WM to use";
+    };
+
+    wlsunset = {
+      enable = mkEnableOption "Enable color temperature switching [wlsunset]";
+
+      pkg = mkOption {
+        type = types.package;
+        default = pkgs.wlsunset;
+        description = "Package for wlsunset to use";
+      };
+
+      lat = mkOption {
+        type = types.str;
+        default = "40.0";
+        description = "Your current latitude, between -90.0 and 90.0";
+      };
+
+      long = mkOption {
+        type = types.str;
+        default = "10.0";
+        description = "Your current longitude, between -180.0 and 180.0";
+      };
     };
 
     swaybg = {
@@ -253,15 +415,18 @@ in {
       (
         if (cfg.type == "sway")
         then sway
-        else if (cfg.type == "dwl")
-        then dwlKi
-        else null
+        else if (cfg.type == "wayfire")
+        then wayfire
+        else dwlKi
       )
       alacritty
       bemenu
       wl-clipboard
       libappindicator-gtk3
       mako
+      wlogout
+      grim
+      slurp
       (
         wlr-randr.overrideAttrs (_: rec {
           pname = "wlr-randr";
@@ -290,6 +455,14 @@ in {
         else null
       ))
     ];
+
+    services.wlsunset = mkIf cfg.wlsunset.enable {
+      enable = true;
+      package = cfg.wlsunset.pkg;
+      latitude = cfg.wlsunset.lat;
+      longitude = cfg.wlsunset.long;
+      systemdTarget = "wayland-session.target";
+    };
 
     # Electron apps look blurry and scaled incorrectly without the added `exec` options.
     xdg.desktopEntries = {
@@ -342,6 +515,10 @@ in {
             then ''
               ${pkgs.sway}/bin/sway
             ''
+            else if (cfg.type == "wayfire")
+            then ''
+              ${pkgs.wayfire}/bin/wayfire
+            ''
             else ''
               ${dwlKi}/bin/dwl
             ''
@@ -360,8 +537,12 @@ in {
     };
 
     xdg.configFile = {
-      "sway/config" = {
+      "sway/config" = mkIf (cfg.type == "sway") {
         text = swayConfig;
+      };
+
+      "wayfire.ini" = mkIf (cfg.type == "wayfire") {
+        text = wayfireConfig;
       };
     };
 
@@ -369,6 +550,15 @@ in {
       dwl-session = mkIf (cfg.type == "dwl") {
         Unit = {
           Description = "Dwl compositor session";
+          Documentation = ["man:systemd.special(7)"];
+          BindsTo = ["wayland-session.target"];
+          After = ["wayland-session.target"];
+        };
+      };
+
+      wayfire-session = mkIf (cfg.type == "wayfire") {
+        Unit = {
+          Description = "Wayfire compositor session";
           Documentation = ["man:systemd.special(7)"];
           BindsTo = ["wayland-session.target"];
           After = ["wayland-session.target"];
@@ -420,7 +610,7 @@ in {
           Before = ["swww.service"];
         };
         Service = {
-          ExecStartPre = "${coreutils}/bin/sleep 0.2";
+          ExecStartPre = "${coreutils}/bin/sleep 0.2"; # Seems to sometimes crash without this
           ExecStart = "${kipkgs.swww}/bin/swww init --no-daemon";
         };
         Install = {

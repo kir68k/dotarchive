@@ -39,6 +39,7 @@ in {
         timewarrior
         buku
         yt-dlp
+        ffmpeg-full
 
         # Run commands/programs through a specified proxy
         proxychains-ng
@@ -70,7 +71,7 @@ in {
       );
 
     # FIXME don't use `/home/ki`, what if in the future I set another username..?
-    xdg.systemDirs.data = mkIf systemCfg.virtualisation.flatpak.enable ["/home/ki/.local/share/flatpak" "/var/lib/flatpak"];
+    xdg.systemDirs.data = mkIf systemCfg.virtualisation.flatpak.enable ["/home/ki/.local/share/flatpak/exports/share" "/var/lib/flatpak/exports/share"];
 
     fonts.fontconfig.enable = true;
 
