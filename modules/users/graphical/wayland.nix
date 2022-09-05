@@ -74,6 +74,7 @@ with lib; let
       alpha \
       autostart \
       command \
+      criteria \
       decoration \
       expo \
       fast-switcher \
@@ -93,7 +94,25 @@ with lib; let
     vwidth = 3
     vheight = 3
 
-    preferred_decoration_mode = client
+    preferred_decoration_mode = server
+
+    # I'll be honest I'd prefer having hexadecimals here
+    # Trying to get it right when you can only work through a fraction is more annoying
+    [decoration]
+    active_color = 0.25 0.3 0.35 1.0
+    button_order = minimize close
+    border_size = ${
+      if (systemCfg.relativity.enable)
+      then "4"
+      else "2"
+    }
+    inactive_color = 0.1 0.11 0.19 1.0
+    font = IBM Plex Mono
+
+    title_height = 15
+
+    ignore_views = app_id is "Firefox"
+    ignore_views = app_id is "Element"
 
     [move]
     activate = <super> BTN_LEFT
@@ -169,7 +188,7 @@ with lib; let
 
     [oswitch]
     next_output = <super> KEY_O
-    next_output_with_win <super> <shift> KEY_O
+    next_output_with_win = <super> <shift> KEY_O
   '';
   swayStartup = pkgs.writeShellScriptBin "sway-setup" ''
     if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
@@ -482,7 +501,7 @@ in {
         mimeType = ["x-scheme-handler/element"];
         categories = ["Network" "InstantMessaging" "Chat"];
         type = "Application";
-        exec = "element-desktop -enable-features=UseOzonePlatform -ozone-platform=wayland %u";
+        exec = "element-desktop -enable-features=UseOzonePlatform,WaylandWindowDecorations -ozone-platform=wayland %u";
         icon = "element";
       };
 

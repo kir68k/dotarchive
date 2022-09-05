@@ -29,10 +29,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    homeage = {
-      url = "github:jordanisaacs/homeage/activatecheck";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    #homeage = {
+    #  url = "github:jordanisaacs/homeage/activatecheck";
+    #  inputs.nixpkgs.follows = "nixpkgs";
+    #};
 
     dwl-flake = {
       url = "git+https://git.kirinsst.xyz/kir/dwl-flake";
@@ -53,7 +53,7 @@
     agenix,
     nur,
     home-manager,
-    homeage,
+    #homeage,
     dwl-flake,
     kipkgs,
     ...
@@ -79,7 +79,7 @@
           scripts
           dwl-flake
           impermanence
-          homeage
+          #homeage
           kipkgs
           ;
       })

@@ -17,12 +17,12 @@ in {
       settings = {
         terminal.vt = 1;
         default_session = let
-          swaySession = pkgs.writeTextFile {
-            name = "sway-session.desktop";
-            destination = "/sway-session.desktop";
+          waylandSession = pkgs.writeTextFile {
+            name = "wayland-session.desktop";
+            destination = "/wayland-session.desktop";
             text = ''
               [Desktop Entry]
-              Name=Sway
+              Name=Wayland
               Exec=$HOME/.winitrc
             '';
           };
@@ -50,7 +50,7 @@ in {
           sessionDirs = builtins.concatStringsSep ":" (
             [zshSession] ++ (
               if (config.ki.graphical.enable && config.ki.graphical.wayland.enable)
-              then [swaySession]
+              then [waylandSession]
               else []
             ) ++ (
               if (config.ki.graphical.enable && config.ki.graphical.xorg.enable)

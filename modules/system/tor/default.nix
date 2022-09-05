@@ -80,9 +80,9 @@ in {
             ClientTransportPlugin = "obfs4 exec ${pkgs.obfs4}/bin/obfs4proxy";
             # Idek if these work, I just HAD to set *something* here or else Tor wouldn't start
             "bridge" = [
-              "obfs4 163.172.189.163:80 CB228CB122E3013FC1057FCD2006E8553E25F1CC cert=I3wBfenslUHKObVuLN5JfEUe4rwBAG3cU8mmdwdGd4yXTpwUvGcRg13nZeCZR4G9us6ALw iat-mode=0"
-              "obfs4 23.234.193.87:32490 EBB4057F2490347EF9D7ABB5FCD715C06369721E cert=3oRwMDuyUCbpKeAQfmQgZevXU6Fn2D3NXP3OZK2itsCi8iHcfTKQvJ3zL1l1BoSTEmduew iat-mode=0"
-              "obfs4 142.47.223.227:8443 38866E175AE605CE22CBE44B6656E27360AF5340 cert=jIGl6AX6qSq0C7WoqBOP3kY7Tlere8r3SRQ+noCP/PiT7yToLcVYe9RlCkwrBKyptMG/Fg iat-mode=0"
+              "obfs4 45.32.196.110:7246 035CC684A22F0C1C28FD3CAC981AABBEEF000E28 cert=JqzUffDFJS0QY5iObd3ajV3Qj4SOkTjHYGVIg9r7IApDIgH76UlpntuneY83rSR2x3Nnfw iat-mode=0"
+              "obfs4 46.226.106.214:63202 1CFD0D96B8AE6E98B0FD21374E55FA17ABBC44F1 cert=rEik+Qgmtr7O2q4p9QeEwJq5RUNuZl40J2twN/ZLiUY3zvRciA2uGGjz5jTOXPM+vF8INQ iat-mode=0"
+              "obfs4 104.194.235.58:60965 B35D736AB8124EF08626EE4F25A03B0720FA07C8 cert=/YP6d+x5KXmCkHipSnn9cprh5OVzKdT3pUxYgzpm17bD+ZfQBXOJbmPzq32RTyMdOF7bNw iat-mode=0"
             ];
           };
         };
