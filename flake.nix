@@ -1,26 +1,10 @@
 {
-  description = "Ki's system configurations";
+  description = "Personal nix-darwin configurations";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-unstable";
-
-    nur = {
-      url = "github:nix-community/NUR";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    impermanence = {
-      url = "github:nix-community/impermanence";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    flake-utils = {
-      url = "github:numtide/flake-utils";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    agenix = {
-      url = "github:ryantm/agenix";
+    nixpkgs.url = "github:nixos/nixpkgs";
+    darwin = {
+      url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -28,44 +12,25 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    #homeage = {
-    #  url = "github:jordanisaacs/homeage/activatecheck";
-    #  inputs.nixpkgs.follows = "nixpkgs";
-    #};
-
-    dwl-flake = {
-      url = "git+https://git.kirinsst.xyz/kir/dwl-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
-    };
-
-    kipkgs = {
-      url = "git+https://git.kirinsst.xyz/kir/kipkgs";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs = {
     self,
     nixpkgs,
-    impermanence,
-    agenix,
-    nur,
+    darwin,
     home-manager,
-    #homeage,
-    dwl-flake,
-    kipkgs,
     ...
   } @ inputs: let
+    system = "x86_64-darwin";
+
     inherit (nixpkgs) lib;
 
     util = import ./lib {
-      inherit system nixpkgs pkgs lib overlays inputs home-manager;
+      inherit system nixpkgs pkgs lib overlays inputs home-manager darwin;
     };
 
     scripts = import ./scripts {
-      inherit pkgs lib;
+      inherit pkgs lib darwin;
     };
 
     inherit
@@ -74,13 +39,8 @@
           system
           pkgs
           lib
-          nur
-          agenix
           scripts
-          dwl-flake
-          impermanence
-          #homeage
-          kipkgs
+          darwin
           ;
       })
       overlays
@@ -91,245 +51,60 @@
     inherit (util) utils;
 
     pkgs = import nixpkgs {
-      inherit system overlays;
+      inherit system darwin overlays;
       config = {
         allowUnfree = true;
       };
     };
 
-    system = "x86_64-linux";
-
-    authorizedKeys = ''
-      ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGwY2ekV5vrjsFMLIyGz3K2aosqCs1BF95tfEpcuNzpI lapic@kirinsst.xyz
-    '';
-
-    authorizedKeyFiles = pkgs.writeTextFile {
-      name = "authorizedKeys";
-      text = authorizedKeys;
+    defaultConfig = {
+      applications.core.enable = true;
     };
 
-    defaultClientConfig = {
-      core.enable = true;
-      boot = {
-        type = "efi-crypt";
-        # plymouth.enable = true; # For now it's broken, all it does is give the TTY default font which is small on HiDPI...
-        # I assume I have missed something, probably as I'm writing this late at night tired.
+    rvConfig = {
+      applications = {
+        core.enable = true;
       };
-      gnome = {
+
+      dev = {
         enable = true;
-        keyring = {
-          enable = true;
-        };
-      };
-      networking = {
-        firewall.enable = true;
-        networkmanager.enable = true;
-      };
-      graphical = {
-        enable = true;
-        xorg.enable = false;
-        wayland = {
-          enable = true;
-          swaylock-pam = true;
-        };
-      };
-      connectivity = {
-        android.enable = true;
-        bluetooth.enable = true;
-        printing.enable = true;
-        sound.enable = true;
+        languages.haskell.enable = true;
       };
     };
-
-    laptopConfig = utils.recursiveMerge [
-      defaultClientConfig
-      {
-        laptop.enable = true;
-        #secrets.identityPaths = [ "" ];
-        networking.interfaces = ["enp0s31f6" "wlp3s0"];
-      }
-    ];
-
-    rvConfig = utils.recursiveMerge [
-      defaultClientConfig
-      {
-        laptop.enable = true;
-        networking.interfaces = ["wlp3s0"];
-        core.time = "cph";
-        greetd.enable = true;
-        ipfs.enable = true;
-        rrStack = {
-          enable = true;
-          lidarr.enable = true;
-          prowlarr.enable = true;
-          common.openFirewall = true;
-        };
-        tty = {
-          enable = true;
-          enableEarly = true;
-          font = {
-            path = "${pkgs.terminus_font}/share/consolefonts/ter-u32n.psf.gz";
-            pkg = with pkgs; terminus_font;
-          };
-          kbdLayout = "dk";
-        };
-        relativity = {
-          enable = true;
-          fprint.enable = true;
-        };
-        virtualisation = {
-          enable = true;
-          docker.enable = true;
-          flatpak.enable = true;
-          lxc.enable = true;
-          libvirt = {
-            enable = true;
-            isolateCpus.enable = true;
-          };
-        };
-        applications = {
-          steam.enable = true;
-        };
-        security.doas = {
-          enable = true;
-          user = ["ki"];
-          keepEnv = true;
-          persist = true;
-        };
-        tor = {
-          enable = true;
-          client.enable = true;
-          client.bridges.enable = true;
-        };
-        #secrets.identityPaths = [ secrets.age.system.relativity.privateKeyPath ];
-      }
-    ];
-
-    defaultUser = {
-      name = "ki";
-      groups = ["wheel"];
-      uid = 1000;
-      hashedPassword = "$6$grTXztDvxt5FaAdh$owQZ5ncLn07tMCx/wvGfXUCSydht.N5Hqs181dHKaTn0mxX4je9ZRfVZf/zxJ7m9llodPxUvkoPRnV.iZrqTB0";
-      shell = pkgs.zsh;
-    };
-
-    defaultUsers = [defaultUser];
-
-    defaultDesktopUser =
-      defaultUser
-      // {
-        groups = defaultUser.groups ++ ["networkmanager" "video" "libvirtd" "docker" "kvm" "ipfs" "plugdev" "rrStack"];
-      };
   in {
-    installMedia = {
-      kde = host.mkISO {
-        name = "nixos";
-        kernelPackage = pkgs.linuxPackages_latest;
-        initrdMods = ["xhci_pci" "ahci" "usb_storage" "sd_mod" "nvme" "usbhid"];
-        kernelMods = ["kvm-intel" "kvm-amd"];
-        kernelParams = [];
-        systemConfig = {};
-      };
-    };
-
-    homeManagerConfigurations = {
-      kirinsst = user.mkHMUser {
-        username = "kirinsst";
+    hmConfigrations = {
+      lapic = user.mkHMUser rec {
+        username = "lapic";
         userConfig = {
-          zsh = {
+          app.enable = true;
+          git = {
             enable = true;
-            dircolors.enable = true;
+            userName = "Lλpic";
+            userMail = "lapic@kirinsst.xyz";
           };
-        };
-      };
-
-      ki = user.mkHMUser {
-        username = "ki";
-        userConfig = {
-          graphical = {
-            applications = {
-              enable = true;
-              firefox.enable = true;
-              java = {
-                enable = true;
-                pkg = pkgs.jdk17;
-              };
-              nextcloud.enable = true;
-              libreoffice.enable = true;
-            };
-            wayland = {
-              enable = true;
-              type = "wayfire";
-              #swaybg = {
-              #  enable = true;
-              #  image = ./modules/users/graphical/wallpapers/nix-background.png;
-              #};
-              swww = {
-                enable = true;
-                image = ./modules/users/graphical/wallpapers/bg1.gif;
-                transition = {
-                  framerate = 60;
-                  step = 180;
-                  type = "random";
-                };
-              };
-              wlsunset = {
-                enable = true;
-                lat = "55";
-                long = "12";
-              };
-              bar.enable = true;
-              lock.enable = true;
-            };
-            xorg = {
-              enable = false;
-              type = "xmonad";
-            };
-          };
-          applications = {
-            enable = true;
-            win64.enable = true;
-          };
-          zsh = {
-            enable = true;
-            dircolors.enable = true;
-          };
-          alacritty.enable = true;
-          git.enable = true;
-          direnv.enable = true;
           ssh = {
             enable = true;
-            git.enable = true;
+            git = {
+              enable = true;
+              domain = "git.kirinsst.xyz";
+              keyPath = "/Users/${username}/.ssh/streamea";
+              port = 42069;
+            };
+          };
+          zsh = {
+            enable = true;
+            starship.enable = true;
           };
         };
       };
     };
 
-    nixosConfigurations = {
+    darwinConfigurations = {
       relativity = host.mkHost {
         name = "relativity";
-        kernelPackage = pkgs.linuxPackages_zen;
-        initrdMods = ["xhci_pci" "nvme" "usb_storage" "sd_mod" "thunderbolt"];
-        kernelMods = ["kvm-intel"];
-        kernelParams = [];
-        kernelPatches = [];
         systemConfig = rvConfig;
-        users = [defaultDesktopUser];
         cpuCores = 8;
-        stateVersion = "22.11"; # Installed from unstable channel ISO, 22.11pre... at the time
-      };
-
-      test-vm = host.mkHost {
-        name = "test-vm";
-        kernelPackage = pkgs.linuxPackages_latest;
-        initrdMods = ["xhci_pci" "nvme" "usb_storage" "sd_mod"];
-        kernelMods = ["kvm-intel"];
-        kernelParams = [];
-        kernelPatches = [];
-        systemConfig = defaultClientConfig;
-        users = [defaultDesktopUser];
-        cpuCores = 4;
-        stateVersion = "22.11";
+        stateVersion = 4;
       };
     };
   };

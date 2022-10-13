@@ -1,6 +1,7 @@
 {
   nixpkgs,
   pkgs,
+  darwin,
   home-manager,
   system,
   lib,
@@ -10,5 +11,5 @@
 }: rec {
   utils = pkgs.callPackage ./utils.nix { self = inputs.self; };
   user = import ./user.nix { inherit nixpkgs pkgs lib system overlays home-manager; };
-  host = import ./host.nix { inherit inputs user utils lib system pkgs; };
+  host = import ./host.nix { inherit inputs utils lib system pkgs darwin; };
 }

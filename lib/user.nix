@@ -1,3 +1,4 @@
+# if this don't work i kms
 {
   pkgs,
   home-manager,
@@ -10,7 +11,7 @@ with builtins; {
   mkHMUser = {
     userConfig,
     username,
-  }: let
+  }: let 
     trySettings = tryEval (fromJSON (readFile /etc/hmsystemdata.json));
     machineData =
       if trySettings.success
@@ -24,53 +25,31 @@ with builtins; {
       ...
     }: {
       options.machineData = lib.mkOption {
+        description = "Settings passed from nix-darwin conf, if not present then empty";
         default = {};
-        description = "Settings passed from nixos system configuration. If not present will be empty";
       };
 
       config.machineData = machineData;
     };
   in
-    home-manager.lib.homeManagerConfiguration {
+    home-manager.lib.homeManagerConfiguration rec {
       inherit pkgs;
       modules = [
-        ../modules/users
+        ../modules/hm
         machineModule
         {
           ki = userConfig;
           nixpkgs = {
             overlays = overlays;
-            config = {
-              allowUnfree = true;
-            };
+            config.allowUnfree = true;
           };
-
+          
           home = {
             inherit username;
+            homeDirectory = "/Users/${username}";
             stateVersion = "22.11";
-            homeDirectory = "/home/${username}";
           };
-          systemd.user.startServices = "sd-switch";
         }
       ];
     };
-
-  mkSystemUser = {
-    name,
-    groups,
-    uid,
-    hashedPassword,
-    shell,
-    ...
-  }: {
-    users.users."${name}" = {
-      name = name;
-      isNormalUser = true;
-      isSystemUser = false;
-      extraGroups = groups;
-      uid = uid;
-      initialHashedPassword = hashedPassword;
-      shell = shell;
-    };
-  };
 }

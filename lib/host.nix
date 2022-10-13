@@ -2,116 +2,46 @@
   system,
   pkgs,
   lib,
-  user,
   inputs,
   utils,
+  darwin,
 }:
 with builtins;
 with utils; {
-  mkISO = {
+  mkHost = {
     name,
-    initrdMods,
-    kernelMods,
-    kernelParams,
-    kernelPackage,
     systemConfig,
-  }:
-    lib.nixosSystem {
-      inherit system;
+    cpuCores,
+    stateVersion,
+  }: let
+    enable = ["enable"];
+    moduleFolder = "/modules/darwin/";
 
-      specialArgs = {};
+    systemEnableModule = enableModule systemConfig;
+
+    userCfg = {
+      inherit name systemConfig cpuCores;
+    };
+  in
+    darwin.lib.darwinSystem {
+      inherit system;
+      inherit inputs;
 
       modules = [
         {
-          imports = [../modules/iso];
+          imports = [(import ../modules/darwin {inherit inputs;})];
 
-          networking.hostName = "${name}";
-          networking.networkmanager.enable = true;
-          networking.useDHCP = false;
+          ki = systemConfig;
+          environment.etc."hmsystemdata.json".text = toJSON userCfg;
 
-          boot.initrd.availableKernelModules = initrdMods;
-          boot.kernelModules = kernelMods;
-
-          boot.kernelParams = kernelParams;
-          boot.kernelPackages = kernelPackage;
-
-          nixpkgs.pkgs = pkgs;
+          nix.settings = {
+            max-jobs = lib.mkDefault cpuCores;
+            experimental-features = [ "nix-command" "flakes" ];
+          };
+          programs.zsh.enable = lib.mkDefault true;
+          services.nix-daemon.enable = lib.mkDefault true;
+          system.stateVersion = stateVersion;
         }
       ];
-    };
-
-  mkHost = {
-    name,
-    initrdMods,
-    kernelMods,
-    kernelParams,
-    kernelPackage,
-    kernelPatches,
-    systemConfig,
-    cpuCores,
-    users,
-    stateVersion,
-    wifi ? [],
-    passthru ? {},
-    gpuTempSensor ? null,
-    cpuTempSensor ? null,
-  }: let
-    sys_users = map (u: user.mkSystemUser u) users;
-
-    enable = ["enable"];
-    impermanencePath = ["impermanence"];
-    qemuPath = ["isQemuGuest"];
-    moduleFolder = "/modules/system/";
-
-    systemConfigStripped =
-      removeModuleOptions
-      {
-        path = impermanencePath;
-        activate = enable;
-      }
-      (removeAttrByPath qemuPath systemConfig);
-
-    systemEnableModule = enableModule systemConfig;
-    systemEnableModuleConfig = enableModuleConfig systemConfigStripped;
-
-    userCfg = {
-      inherit name systemConfig cpuCores gpuTempSensor cpuTempSensor;
-    };
-  in
-    lib.nixosSystem {
-      inherit system;
-
-      modules =
-        [
-          {
-            imports = [(import ../modules/system {inherit inputs;})] ++ sys_users;
-
-            ki = systemConfigStripped;
-            environment.etc = {
-              "hmsystemdata.json".text = toJSON userCfg;
-            };
-
-            networking.hostName = name;
-            networking.wireless.interfaces = wifi;
-            networking.useDHCP = lib.mkDefault false; # Disable any new interface added that is not in config
-
-            boot.initrd.availableKernelModules = initrdMods;
-            boot.kernelModules = kernelMods;
-            boot.kernelParams = kernelParams;
-            boot.kernelPackages = kernelPackage;
-            boot.kernelPatches = kernelPatches;
-
-            nixpkgs.pkgs = pkgs;
-            nix.settings.max-jobs = lib.mkDefault cpuCores;
-
-            system.stateVersion = stateVersion;
-          }
-          passthru
-        ]
-        ++ (systemEnableModule (import (inputs.nixpkgs + "/nixos/modules/profiles/qemu-guest.nix")) qemuPath)
-        ++ (systemEnableModuleConfig inputs.impermanence.nixosModule moduleFolder {
-          path = impermanencePath;
-          activate = enable;
-        });
     };
 }
