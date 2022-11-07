@@ -77,6 +77,10 @@
         username = "lapic";
         userConfig = {
           app.enable = true;
+          direnv = {
+            enable = true;
+            nix.enable = true;
+          };
           git = {
             enable = true;
             userName = "Lλpic";

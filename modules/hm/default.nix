@@ -7,7 +7,7 @@
 }: {
   imports = [
     ./app
-    #./direnv
+    ./direnv
     ./git
     ./ssh
     ./zsh
