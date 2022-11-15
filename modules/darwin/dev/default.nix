@@ -23,7 +23,7 @@ in {
       git direnv #sysTools
     ] ++ (
       if (cfg.languages.haskell.enable)
-      then [ghc haskell-language-server hlint cabal-install]
+      then [ghc haskell-language-server hlint stack cabal-install]
       else []
     );
   };
