@@ -76,7 +76,12 @@
       lapic = user.mkHMUser rec {
         username = "lapic";
         userConfig = {
-          app.enable = true;
+          app = {
+            enable = true;
+            auxiliaryPackages = with pkgs; [
+              yt-dlp
+            ];
+          };
           direnv = {
             enable = true;
             nix.enable = true;
